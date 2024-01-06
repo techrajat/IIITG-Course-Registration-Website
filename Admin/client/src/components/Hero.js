@@ -1,7 +1,8 @@
 import React from 'react';
 import '../App.css';
+import { Link } from 'react-router-dom';
 
-function Hero() {
+function Hero(props) {
   return (
     <div className="home">
       <div className="hero-section">
@@ -11,14 +12,14 @@ function Hero() {
       <div className="dropdown">
         <button className="dropbtn">Select Semester</button>
         <div className="dropdown-content">
-          <a href="/">1st Semester</a>
-          <a href="/">2nd Semester</a>
-          <a href="/">3rd Semester</a>
-          <a href="/">4th Semester</a>
-          <a href="/">5th Semester</a>
-          <a href="/">6th Semester</a>
-          <a href="/">7th Semester</a>
-          <a href="/">8th Semester</a>
+          <Link to="/status" onClick={()=>{props.setSem(1)}}>1st Semester</Link>
+          <Link to="/status" onClick={()=>{props.setSem(2)}}>2nd Semester</Link>
+          <Link to="/status" onClick={()=>{props.setSem(3)}}>3rd Semester</Link>
+          <Link to="/status" onClick={()=>{props.setSem(4)}}>4th Semester</Link>
+          <Link to="/status" onClick={()=>{props.setSem(5)}}>5th Semester</Link>
+          <Link to="/status" onClick={()=>{props.setSem(6)}}>6th Semester</Link>
+          <Link to="/status" onClick={()=>{props.setSem(7)}}>7th Semester</Link>
+          <Link to="/status" onClick={()=>{props.setSem(8)}}>8th Semester</Link>
         </div>
       </div>
     </div>
