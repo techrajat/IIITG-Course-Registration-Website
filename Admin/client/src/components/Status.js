@@ -8,28 +8,30 @@ function Status(props) {
         setIsChecked(event.target.checked);
     };
 
-    const students = async (reg) => {
+    const [students, setStudents] = useState([]);
+
+    const getStudents = async (reg) => {
         let endpoint = "";
-        if(reg === true){
+        if (reg === true) {
             endpoint = "http://127.0.0.1:5000/registered";
         }
-        else{
+        else {
             endpoint = "http://127.0.0.1:5000/unregistered";
         }
-        let students = await fetch(endpoint, {
+        let data = await fetch(endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: `sem=${encodeURIComponent(props.sem)}`
         });
-        if (students.status === 200) {
-            students = await students.json();
-            students = students.result;
-            console.log(students)
+        if (data.status === 200) {
+            data = await data.json();
+            data = data.result;
+            setStudents(data);
         }
     };
 
     useEffect(() => {
-        students(isChecked);
+        getStudents(isChecked);
         //eslint-disable-next-line
     }, [isChecked]);
 
@@ -38,14 +40,14 @@ function Status(props) {
             <div className="choose">
                 <div className="form-check form-check-inline">
                     <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked={isChecked} onClick={() => { setIsChecked(true) }} onChange={handleCheckboxChange} />
-                    <label className="form-check-label" htmlFor="inlineRadio1">Regsitered</label>
+                    <label className="form-check-label" htmlFor="inlineRadio1"><b>Regsitered</b></label>
                 </div>
                 <div className="form-check form-check-inline">
                     <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" onClick={() => { setIsChecked(false) }} />
-                    <label className="form-check-label" htmlFor="inlineRadio2">Unregsitered</label>
+                    <label className="form-check-label" htmlFor="inlineRadio2"><b>Unregsitered</b></label>
                 </div>
             </div>
-            <table className="table table-striped">
+            <table className="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">Roll no.</th>
@@ -54,27 +56,20 @@ function Status(props) {
                         <th scope="col">Allotted elective</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry the Bird</td>
-                        <td>@twitter</td>
-                        <td>@twitter</td>
-                    </tr>
+                <tbody class="table-group-divider">
+                    {students.map((element) => {
+                        return <tr>
+                            <td>{element.roll_number}</td>
+                            <td>{element.name}</td>
+                            <td>{!element.selected_elective ? "NA" : element.selected_elective}</td>
+                            <td>{!element.allotted_elective ? "NA" : element.allotted_elective}</td>
+                        </tr>
+                    })}
                 </tbody>
             </table>
+            <div className="allotBtn">
+                <button type="button" className="btn btn-success">Allocate Electives</button>
+            </div>
         </div>
     );
 }
