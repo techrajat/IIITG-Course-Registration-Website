@@ -3,11 +3,15 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    height: calc(100vh - 70px);
+    height: 100vh;
     background-color: #f3f3f3;
 }
 
 .head {
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    z-index: 1;
     background-color: #333;
     color: #fff;
     padding: 10px;
@@ -34,7 +38,7 @@
 }
 
 .hero-section {
-    height: 350px;
+    height: 100vh;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
@@ -49,6 +53,7 @@
     font-size: 16px;
     border: none;
     border-radius: 5px;
+    margin-top: 20px;
 }
 
 .dropdown {
@@ -87,7 +92,10 @@
 }
 
 .choose {
-    margin: 20px;
+    margin: 100px 30px 30px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .form-check:hover{
@@ -100,4 +108,11 @@
 
 .form-check-label:hover{
     cursor: pointer;
+}
+
+.allotBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px 50px 100px 50px;
 }
