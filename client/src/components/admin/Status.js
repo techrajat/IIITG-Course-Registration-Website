@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import '../App.css';
+import '../../App.css';
 
 function Status(props) {
     const [isChecked, setIsChecked] = useState(true);
@@ -32,6 +32,13 @@ function Status(props) {
 
     useEffect(() => {
         getStudents(isChecked);
+
+        if(isChecked){
+            document.querySelector(".allotBtn button").style.display = "block";
+        }
+        else{
+            document.querySelector(".allotBtn button").style.display = "none";
+        }
         //eslint-disable-next-line
     }, [isChecked]);
 
@@ -56,9 +63,9 @@ function Status(props) {
                         <th scope="col">Allotted elective</th>
                     </tr>
                 </thead>
-                <tbody class="table-group-divider">
+                <tbody className="table-group-divider">
                     {students.map((element) => {
-                        return <tr>
+                        return <tr key={element.roll_number}>
                             <td>{element.roll_number}</td>
                             <td>{element.name}</td>
                             <td>{!element.selected_elective ? "NA" : element.selected_elective}</td>
