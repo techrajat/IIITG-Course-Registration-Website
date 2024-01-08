@@ -1,8 +1,8 @@
 import React from 'react';
-import '../App.css';
+import '../../App.css';
 import { Link } from 'react-router-dom';
 
-function Hero(props) {
+function StudentHero(props) {
   return (
     <div className="home">
       <div className="hero-section">
@@ -27,4 +27,4 @@ function Hero(props) {
   );
 }
 
-export default Hero;
+export default StudentHero;

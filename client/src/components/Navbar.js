@@ -6,7 +6,7 @@ function Navbar() {
   return (
     <div>
       <header className="head">
-        <div className="college-name">Admin</div>
+        <div className="college-name">IIITG Course Registration</div>
         <nav>
           <Link to="/">Home</Link>
           <Link to="/">Contact</Link>
