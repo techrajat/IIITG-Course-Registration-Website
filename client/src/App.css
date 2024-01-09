@@ -197,3 +197,27 @@
     left: 560px;
     z-index: 2;
 }
+
+#warn {
+    display: none;
+    position: absolute;
+    top: 500px;
+    left: 482px;
+    z-index: 2;
+    color: red;
+    font-weight: bold;
+    width: 300px;
+    text-align: center;
+}
+
+#logWarn {
+    display: none;
+    position: absolute;
+    top: 431px;
+    left: 465px;
+    z-index: 2;
+    color: red;
+    font-weight: bold;
+    width: 353px;
+    text-align: center;
+}
