@@ -9,6 +9,9 @@ collection = db['RegStatus']
 @status_bp.route("/registered", methods=['POST'])
 def registered():
     try:
+        user = request.environ['user']
+        if(not user):
+          return {"error": "Authentication failed"}, 400  
         semester = request.form['sem']
         students = collection.find({"semester": int(semester), "status": 1})
         students = list(students)
@@ -20,6 +23,9 @@ def registered():
 @status_bp.route("/unregistered", methods=['POST'])
 def unregistered():
     try:
+        user = request.environ['user']
+        if(not user):
+          return {"error": "Authentication failed"}, 400
         semester = request.form['sem']
         students = collection.find({"semester": int(semester), "status": 0}, {'_id': 0})
         students = list(students)

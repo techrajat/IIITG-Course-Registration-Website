@@ -69,6 +69,7 @@ function Login(props) {
       document.getElementById("logWarn").innerHTML = data;
     }
     else {
+      data = await data.json();
       document.getElementById("logWarn").style.display = "none";
       localStorage.setItem('token', data['token']);
       if(props.adminSession)
