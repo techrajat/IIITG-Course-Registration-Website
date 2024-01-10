@@ -22,7 +22,7 @@ function App() {
           <Route exact path='/' element={<Login adminSession={adminSession} toggleAdminSession={toggleAdminSession} />}></Route>
           <Route exact path='/adminhero' element={<AdminHero setSem={setSem} />}></Route>
           <Route exact path='/studenthero' element={<StudentHero setSem={setSem} />}></Route>
-          <Route exact path='/status' element={<Status sem={sem} />}></Route>
+          <Route exact path='/status' element={<Status sem={sem} adminSession={adminSession} />}></Route>
         </Routes>
       </Router>
     </div>

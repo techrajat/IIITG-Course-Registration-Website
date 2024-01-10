@@ -20,7 +20,10 @@ function Status(props) {
         }
         let data = await fetch(endpoint, {
             method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            headers: { 
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": localStorage.getItem('token'),
+                "Admin": props.adminSession },
             body: `sem=${encodeURIComponent(props.sem)}`
         });
         if (data.status === 200) {
