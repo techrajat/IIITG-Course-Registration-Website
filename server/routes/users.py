@@ -58,3 +58,11 @@ def login():
                 return {"error": "Wrong login credentials"}, 400
     except:
         return {"error": "Internal server error"}, 500
+    
+@users_bp.route('/getuser')
+def getuser():
+    try:
+        user = request.environ['user']
+        return {"name": user['name']}, 200
+    except:
+        return {"error": "Internal server error"}, 500
