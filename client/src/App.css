@@ -42,6 +42,14 @@
     margin: 0 15px;
 }
 
+#logged a{
+    width: 129px;
+}
+
+#logged button{
+    font-size: large;
+}
+
 .hero-section {
     height: 100vh;
     display: flex;

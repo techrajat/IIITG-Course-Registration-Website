@@ -72,6 +72,7 @@ function Login(props) {
       data = await data.json();
       document.getElementById("logWarn").style.display = "none";
       localStorage.setItem('token', data['token']);
+      props.setLogged(true);
       if(props.adminSession)
         navigate('/adminhero');
       else
