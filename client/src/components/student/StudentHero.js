@@ -2,7 +2,7 @@ import { React, useEffect } from 'react';
 import '../../App.css';
 import { Link } from 'react-router-dom';
 
-function StudentHero(props) {
+function StudentHero() {
   const getName=async()=>{
     let data = await fetch("http://127.0.0.1:5000/getuser", {
       method: "GET",
@@ -25,7 +25,7 @@ function StudentHero(props) {
   return (
     <div className="studentRegOptions">
         <div><h1 id="UserName">Name</h1></div>
-        <div className="options"><Link to="/" className="option">Course Registration</Link></div>
+        <div className="options"><Link to="/regpage" className="option">Course Registration</Link></div>
     </div>
   );
 }
