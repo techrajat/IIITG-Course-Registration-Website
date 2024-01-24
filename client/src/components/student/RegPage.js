@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function CourseReg(props) {
+function RegPage(props) {
   const navigate = useNavigate();
 
   const [user, setUser] = useState({});
@@ -72,4 +72,4 @@ function CourseReg(props) {
   );
 }
 
-export default CourseReg;
+export default RegPage;
