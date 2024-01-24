@@ -13,5 +13,8 @@ app.register_blueprint(users.users_bp)
 import routes.regStatus as regStatus
 app.register_blueprint(regStatus.status_bp)
 
+import routes.courses as courses
+app.register_blueprint(courses.courses_bp)
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

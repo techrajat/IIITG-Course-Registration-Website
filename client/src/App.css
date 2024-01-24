@@ -248,6 +248,10 @@
     height: 146px;
 }
 
+.options a {
+    width: 228px;
+}
+
 .option {
     width: 200px;
     padding: 20px;
@@ -260,4 +264,49 @@
 
 .option:hover {
     background-color: #2980b9;
+}
+
+.reg-form-container {
+    max-width: 406px;
+    margin: 50px auto;
+    margin-top: 100px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#regForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#regForm span {
+    color: red;
+}
+
+#regForm label {
+    margin-bottom: 8px;
+}
+
+#regForm input, #regForm select {
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.elective {
+    display: flex;
+    flex-direction: column;
+}
+
+#regForm input[type="submit"] {
+    background-color: #4caf50;
+    color: #fff;
+    cursor: pointer;
+}
+
+#regForm input[type="submit"]:hover {
+    background-color: #45a049;
 }

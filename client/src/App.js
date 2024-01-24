@@ -7,6 +7,7 @@ import AdminHero from './components/admin/AdminHero';
 import Status from './components/admin/Status';
 import StudentHero from './components/student/StudentHero';
 import RegPage from './components/student/RegPage';
+import Payment from './components/student/Payment';
 
 function App() {
   const [sem, setSem] = useState(0);
@@ -25,7 +26,8 @@ function App() {
           <Route exact path='/adminhero' element={<AdminHero setSem={setSem} />}></Route>
           <Route exact path='/status' element={<Status sem={sem} adminSession={adminSession} />}></Route>
           <Route exact path='/studenthero' element={<StudentHero />}></Route>
-          <Route exact path='/regpage' element={<RegPage />}></Route>
+          <Route exact path='/regpage' element={<RegPage adminSession={adminSession} />}></Route>
+          <Route exact path='/payment' element={<Payment />}></Route>
         </Routes>
       </Router>
     </div>
