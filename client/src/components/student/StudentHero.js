@@ -13,7 +13,7 @@ function StudentHero() {
     });
     if(data.status === 200){
       data = await data.json();
-      const name = data.name;
+      const name = data.user.name;
       document.getElementById('UserName').innerHTML = `Welcome ${name}`;
     }
   }

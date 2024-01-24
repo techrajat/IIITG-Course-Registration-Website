@@ -18,7 +18,8 @@ function Navbar(props) {
     });
     if(data.status === 200){
       data = await data.json();
-      const name = data.name;
+      localStorage.setItem("details", JSON.stringify(data.user));
+      const name = data.user.name;
       document.getElementById('username').innerHTML = `<i class="fa-solid fa-user"></i> ${name}`;
     }
   }

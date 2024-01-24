@@ -63,6 +63,11 @@ def login():
 def getuser():
     try:
         user = request.environ['user']
-        return {"name": user['name']}, 200
+        if(user):
+            email = user['email']
+            user = students.find_one({"email": email}, {'_id': 0})
+            return {"user": user}, 200
+        else:
+            return {"error": "Wrong login credentials"}, 400
     except:
         return {"error": "Internal server error"}, 500
