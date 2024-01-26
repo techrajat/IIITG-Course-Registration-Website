@@ -8,6 +8,7 @@ import Status from './components/admin/Status';
 import StudentHero from './components/student/StudentHero';
 import RegPage from './components/student/RegPage';
 import Payment from './components/student/Payment';
+import Receipt from './components/student/Receipt';
 
 function App() {
   const [sem, setSem] = useState(0);
@@ -28,6 +29,7 @@ function App() {
           <Route exact path='/studenthero' element={<StudentHero setLogged={setLogged} adminSession={adminSession} />}></Route>
           <Route exact path='/regpage' element={<RegPage setLogged={setLogged} adminSession={adminSession} />}></Route>
           <Route exact path='/payment' element={<Payment setLogged={setLogged} adminSession={adminSession} />}></Route>
+          <Route exact path='/receipt' element={<Receipt setLogged={setLogged} adminSession={adminSession} />}></Route>
         </Routes>
       </Router>
     </div>
