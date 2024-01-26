@@ -48,7 +48,6 @@ function Payment(props) {
     });
     if(data.status === 200){
       data = await data.json();
-      localStorage.setItem('order_id', data.order_id);
       payment(data.order_id);
       setLoad(false);
       document.getElementById("btnText").innerHTML = "Proceed to Payment";
