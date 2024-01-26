@@ -42,11 +42,11 @@
     margin: 0 15px;
 }
 
-#logged a{
+#logged a {
     width: 129px;
 }
 
-#logged button{
+#logged button {
     font-size: large;
 }
 
@@ -209,7 +209,7 @@
 #warn {
     display: none;
     position: absolute;
-    top: 500px;
+    top: 564px;
     left: 482px;
     z-index: 2;
     color: red;
@@ -237,7 +237,8 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: #f3f3f3;;
+    background-color: #f3f3f3;
+    ;
 }
 
 .options {
@@ -248,15 +249,12 @@
     height: 146px;
 }
 
-.options a {
-    width: 228px;
-}
-
 .option {
     width: 200px;
     padding: 20px;
     background-color: #3498db;
     color: #fff;
+    border: none;
     border-radius: 8px;
     text-decoration: none;
     transition: background-color 0.3s ease;
@@ -289,7 +287,8 @@
     margin-bottom: 8px;
 }
 
-#regForm input, #regForm select {
+#regForm input,
+#regForm select {
     padding: 8px;
     margin-bottom: 16px;
     border: 1px solid #ccc;
@@ -309,4 +308,56 @@
 
 #regForm input[type="submit"]:hover {
     background-color: #45a049;
+}
+
+#bill {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bill-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+.bill-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.total {
+    font-weight: bold;
+    border-top: 2px solid #333;
+    margin-top: 15px;
+    padding-top: 15px;
+    font-size: 18px;
+}
+
+.bill-container button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 15px;
+    background-color: #007bff;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.bill-container button:hover {
+    background-color: #0056b3;
 }

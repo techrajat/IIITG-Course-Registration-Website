@@ -1,8 +1,9 @@
-import React from 'react';
+import { React } from 'react';
 import '../../App.css';
 import { Link } from 'react-router-dom';
 
 function AdminHero(props) {
+
   return (
     <div className="home">
       <div className="hero-section">

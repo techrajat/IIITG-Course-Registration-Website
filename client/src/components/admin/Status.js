@@ -20,10 +20,11 @@ function Status(props) {
         }
         let data = await fetch(endpoint, {
             method: "POST",
-            headers: { 
+            headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Authorization": localStorage.getItem('token'),
-                "Admin": props.adminSession },
+                "Admin": props.adminSession
+            },
             body: `sem=${encodeURIComponent(props.sem)}`
         });
         if (data.status === 200) {
@@ -36,10 +37,10 @@ function Status(props) {
     useEffect(() => {
         getStudents(isChecked);
 
-        if(isChecked){
+        if (isChecked) {
             document.querySelector(".allotBtn button").style.display = "block";
         }
-        else{
+        else {
             document.querySelector(".allotBtn button").style.display = "none";
         }
         //eslint-disable-next-line

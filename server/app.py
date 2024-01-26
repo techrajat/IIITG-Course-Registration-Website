@@ -1,6 +1,10 @@
 from flask import *
 app = Flask(__name__)
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 from flask_cors import CORS
 CORS(app)
 
@@ -15,6 +19,9 @@ app.register_blueprint(regStatus.status_bp)
 
 import routes.courses as courses
 app.register_blueprint(courses.courses_bp)
+
+import routes.payment as payment
+app.register_blueprint(payment.pay_bp)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

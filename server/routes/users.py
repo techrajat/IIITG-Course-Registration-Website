@@ -4,8 +4,13 @@ users_bp = Blueprint("users_bp", __name__)
 import bcrypt
 import jwt
 
+from dotenv import load_dotenv
+load_dotenv()
+
+import os
 import pymongo
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+mongodb_conn_string = os.environ.get('mongodb_conn_string')
+myclient = pymongo.MongoClient(mongodb_conn_string)
 mydb = myclient['IIITG']
 students = mydb['Students']
 credentials = mydb['Credentials']
@@ -15,17 +20,18 @@ adminCred = mydb['Admin']
 def register():
     try:
         name = request.form['name']
+        roll = request.form['roll']
         email = request.form['email']
-        match = students.find_one({"name": name, "email": email})
+        match = students.find_one({"name": name, "roll_number": roll, "email": email})
         if(not match):
-            return {"error": "Wrong name or email"}, 400
+            return {"error": "Wrong name, roll number or email"}, 400
         registered = credentials.find_one({"email": email})
         if(registered):
             return {"error": "Student already registered"}, 400
         password = request.form['password']
         password = password.encode("utf-8")
         hashed = bcrypt.hashpw(password, bcrypt.gensalt())
-        credentials.insert_one({"name": request.form['name'], "email": request.form['email'], "password": hashed})
+        credentials.insert_one({"name": name, "roll_number": roll, "email": email, "password": hashed})
         return {"success": "Registration successful"}, 200
     except:
         return {"error": "Internal server error"}, 500
@@ -64,8 +70,13 @@ def getuser():
     try:
         user = request.environ['user']
         if(user):
+            collection = students
+            if(user['name'] == "Admin"):
+                collection = adminCred
             email = user['email']
-            user = students.find_one({"email": email}, {'_id': 0})
+            user = collection.find_one({"email": email}, {'_id': 0})
+            if "password" in user:
+                user.pop("password")
             return {"user": user}, 200
         else:
             return {"error": "Wrong login credentials"}, 400

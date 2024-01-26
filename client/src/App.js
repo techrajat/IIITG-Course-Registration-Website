@@ -25,9 +25,9 @@ function App() {
           <Route exact path='/' element={<Login adminSession={adminSession} toggleAdminSession={toggleAdminSession} setLogged={setLogged} />}></Route>
           <Route exact path='/adminhero' element={<AdminHero setSem={setSem} />}></Route>
           <Route exact path='/status' element={<Status sem={sem} adminSession={adminSession} />}></Route>
-          <Route exact path='/studenthero' element={<StudentHero />}></Route>
-          <Route exact path='/regpage' element={<RegPage adminSession={adminSession} />}></Route>
-          <Route exact path='/payment' element={<Payment />}></Route>
+          <Route exact path='/studenthero' element={<StudentHero setLogged={setLogged} adminSession={adminSession} />}></Route>
+          <Route exact path='/regpage' element={<RegPage setLogged={setLogged} adminSession={adminSession} />}></Route>
+          <Route exact path='/payment' element={<Payment setLogged={setLogged} adminSession={adminSession} />}></Route>
         </Routes>
       </Router>
     </div>

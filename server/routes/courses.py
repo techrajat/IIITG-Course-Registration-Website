@@ -1,9 +1,14 @@
 from flask import *
 courses_bp = Blueprint("courses_bp", __name__)
 
+from dotenv import load_dotenv
+load_dotenv()
+
+import os
 import pymongo
-client = pymongo.MongoClient("mongodb://localhost:27017/")
-db = client['IIITG']
+mongodb_conn_string = os.environ.get('mongodb_conn_string')
+myclient = pymongo.MongoClient(mongodb_conn_string)
+db = myclient['IIITG']
 collection = db['Courses']
 
 @courses_bp.route("/getcourse", methods=['POST'])
