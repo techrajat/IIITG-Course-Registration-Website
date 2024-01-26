@@ -361,3 +361,35 @@
 .bill-container button:hover {
     background-color: #0056b3;
 }
+
+#receiptContainer {
+    margin-top: 83px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#receipt {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 98vw;
+}
+
+#receipt h1 {
+    margin-bottom: 25px;
+}
+
+#receiptContainer button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#receiptContainer button:hover {
+    background-color: #45a049;
+}

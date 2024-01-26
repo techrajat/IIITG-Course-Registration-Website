@@ -17,7 +17,7 @@ function Payment(props) {
       "description": "Course Registration",
       "image": "https://upload.wikimedia.org/wikipedia/en/thumb/2/22/Indian_Institute_of_Information_Technology%2C_Guwahati_Logo.svg/1200px-Indian_Institute_of_Information_Technology%2C_Guwahati_Logo.svg.png",
       "order_id": order_id,
-      "callback_url": "http://127.0.0.1:5000/payment",
+      "callback_url": `http://127.0.0.1:5000/payment/${user.roll_number}`,
       "prefill": {
         "name": user.name,
         "email": user.email,
@@ -48,7 +48,7 @@ function Payment(props) {
     });
     if(data.status === 200){
       data = await data.json();
-      console.log(data.order_id)
+      localStorage.setItem('order_id', data.order_id);
       payment(data.order_id);
       setLoad(false);
       document.getElementById("btnText").innerHTML = "Proceed to Payment";
@@ -68,19 +68,19 @@ function Payment(props) {
         <h2>Your Bill</h2>
         <div className="bill-item">
           <span>Tuition Fee:</span>
-          <span>{parseFloat(process.env.REACT_APP_Tuition_Fee)}</span>
+          <span>&#8377; {parseFloat(process.env.REACT_APP_Tuition_Fee).toFixed(2)}</span>
         </div>
         <div className="bill-item">
           <span>Hostel Fee:</span>
-          <span>{parseFloat(process.env.REACT_APP_Hostel_Fee)}</span>
+          <span>&#8377; {parseFloat(process.env.REACT_APP_Hostel_Fee).toFixed(2)}</span>
         </div>
         <div className="bill-item">
           <span>Mess Fee:</span>
-          <span>{parseFloat(process.env.REACT_APP_Mess_Fee)}</span>
+          <span>&#8377; {parseFloat(process.env.REACT_APP_Mess_Fee).toFixed(2)}</span>
         </div>
         <div className="total">
           <span>Total: </span>
-          <span>{parseFloat(process.env.REACT_APP_Total_Fee)}</span>
+          <span>&#8377;{parseFloat(process.env.REACT_APP_Total_Fee).toFixed(2)}</span>
         </div>
         <button id="payFinal" onClick={createBill}><ClipLoader loading={load} size={20}/><span id="btnText">Proceed to Payment</span></button>
       </div>
