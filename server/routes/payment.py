@@ -56,20 +56,34 @@ def payment(roll):
             ist_timezone = pytz.timezone('Asia/Kolkata')
             current_time_ist = datetime.now(ist_timezone).time()
             formatted_time_ist = current_time_ist.strftime("%H:%M:%S")
-            paymentsDB.insert_one({'name': user['name'], 'email': user['email'], 'roll_number': user['roll_number'], 'razorpay_payment_id': details['razorpay_payment_id'], 'razorpay_order_id': details['razorpay_order_id'], 'razorpay_signature': details['razorpay_signature'], 'date': today, 'time': formatted_time_ist})
+            paymentsDB.insert_one({'name': user['name'], 'email': user['email'], 'roll_number': user['roll_number'], 'semester': user['semester'], 'razorpay_payment_id': details['razorpay_payment_id'], 'razorpay_order_id': details['razorpay_order_id'], 'razorpay_signature': details['razorpay_signature'], 'date': today, 'time': formatted_time_ist})
             return redirect('http://127.0.0.1:3000/receipt')
         else:
             return {"error": "Wrong signature"}, 400
     except:
         return {"error": "Server error"}, 500
     
-@pay_bp.route("/receipt/<order_id>")
-def receipt(order_id):
+@pay_bp.route("/receipt")
+def receipt():
     try:
         user = request.environ['user']
         if(not user):
           return {"error": "Authentication failed"}, 400
-        receipt = paymentsDB.find_one({'razorpay_order_id': order_id}, {'_id': 0})
+        receipt = paymentsDB.find_one({'roll_number': user['roll_number']}, {'_id': 0})
         return {"result": receipt}, 200
+    except:
+        return {"error": "Server error"}, 500
+    
+@pay_bp.route("/paystatus")
+def paystatus():
+    try:
+        user = request.environ['user']
+        if(not user):
+          return {"error": "Authentication failed"}, 400
+        receipt = paymentsDB.find_one({'roll_number': user['roll_number']}, {'_id': 0})
+        if receipt:
+            return {"result": "Paid"}, 200
+        else:
+            return {"result": "Not paid"}, 400
     except:
         return {"error": "Server error"}, 500

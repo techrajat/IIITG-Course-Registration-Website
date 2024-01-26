@@ -5,7 +5,7 @@ function Receipt(props) {
   const [recDetails, setRecDetails] = useState({});
 
   const getReceipt=async()=>{
-    let data = await fetch(`http://127.0.0.1:5000/receipt/${localStorage.getItem('order_id')}`, {
+    let data = await fetch(`http://127.0.0.1:5000/receipt`, {
       method: "GET",
       headers: {
         "Authorization": localStorage.getItem('token'),

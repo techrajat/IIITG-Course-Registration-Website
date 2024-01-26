@@ -246,7 +246,7 @@
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
-    height: 146px;
+    margin: 15px
 }
 
 .option {
