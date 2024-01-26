@@ -7,16 +7,16 @@ function Navbar(props) {
 
   const [homeLink, setHomeLink] = useState("/");
 
-  const getName=async()=>{
+  const getUser = async () => {
     let data = await fetch("http://127.0.0.1:5000/getuser", {
       method: "GET",
-      headers: { 
+      headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         "Authorization": localStorage.getItem('token'),
         "Admin": props.adminSession
       },
     });
-    if(data.status === 200){
+    if (data.status === 200) {
       data = await data.json();
       localStorage.setItem("details", JSON.stringify(data.user));
       const name = data.user.name;
@@ -24,10 +24,10 @@ function Navbar(props) {
     }
   }
 
-  useEffect(()=>{
-    if(props.logged){
-      getName();
-      if(!props.adminSession)
+  useEffect(() => {
+    if (props.logged) {
+      getUser();
+      if (!props.adminSession)
         setHomeLink("/studenthero");
       else
         setHomeLink("/adminhero");
@@ -35,7 +35,7 @@ function Navbar(props) {
     //eslint-disable-next-line
   }, [props.logged]);
 
-  const logout=()=>{
+  const logout = () => {
     setHomeLink("/");
     props.setLogged(false);
     props.setAdminSession(0);

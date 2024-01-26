@@ -41,7 +41,7 @@ function Login(props) {
     let data = await fetch("http://127.0.0.1:5000/register", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `name=${document.getElementById('name').value}&email=${document.getElementById('email').value}&password=${document.getElementById('password').value}`
+      body: `name=${document.getElementById('name').value}&roll=${document.getElementById('roll').value}&email=${document.getElementById('email').value}&password=${document.getElementById('password').value}`
     });
     if (data.status !== 200) {
       data = await data.json();
@@ -85,6 +85,7 @@ function Login(props) {
       <div className="form">
         <form className="register-form" onSubmit={register}>
           <input type="text" id="name" placeholder="Name" required />
+          <input type="text" id="roll" placeholder="Roll number" required />
           <input type="email" id="email" placeholder="Email address" required />
           <input type="password" id="password" placeholder="Password" required />
           <input type="password" id="cnfPass" placeholder="Confirm password" required />
