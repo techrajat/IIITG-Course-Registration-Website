@@ -7,6 +7,7 @@ load_dotenv()
 import os
 Razor_key_id = os.environ.get('Razor_key_id')
 Razor_key_secret = os.environ.get('Razor_key_secret')
+Total_Fee = os.environ.get('Total_Fee')
 
 import pymongo
 mongodb_conn_string = os.environ.get('mongodb_conn_string')
@@ -57,7 +58,7 @@ def payment(roll):
             current_time_ist = datetime.now(ist_timezone).time()
             formatted_time_ist = current_time_ist.strftime("%H:%M:%S")
             paymentsDB.insert_one({'name': user['name'], 'email': user['email'], 'roll_number': user['roll_number'], 'semester': user['semester'], 'razorpay_payment_id': details['razorpay_payment_id'], 'razorpay_order_id': details['razorpay_order_id'], 'razorpay_signature': details['razorpay_signature'], 'date': today, 'time': formatted_time_ist})
-            return redirect('http://127.0.0.1:3000/receipt')
+            return render_template('receipt.html', name=user['name'], email=user['email'], roll_number=user['roll_number'], razorpay_payment_id=details['razorpay_payment_id'], razorpay_order_id=details['razorpay_order_id'], razorpay_signature=details['razorpay_signature'], date=today, time=formatted_time_ist, amount=Total_Fee)
         else:
             return {"error": "Wrong signature"}, 400
     except:

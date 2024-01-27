@@ -15,7 +15,7 @@ collection = db['RegStatus']
 def registered():
     try:
         user = request.environ['user']
-        if(not user or user['name'] != 'Admin'):
+        if(not user):
           return {"error": "Authentication failed"}, 400  
         semester = request.form['sem']
         students = collection.find({"semester": int(semester), "status": 1})
@@ -29,7 +29,7 @@ def registered():
 def unregistered():
     try:
         user = request.environ['user']
-        if(not user or user['name'] != 'Admin'):
+        if(not user):
           return {"error": "Authentication failed"}, 400
         semester = request.form['sem']
         students = collection.find({"semester": int(semester), "status": 0}, {'_id': 0})

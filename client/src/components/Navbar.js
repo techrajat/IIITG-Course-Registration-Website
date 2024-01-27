@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import '../App.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { googleLogout } from '@react-oauth/google';
 
 function Navbar(props) {
   const navigate = useNavigate();
@@ -8,24 +9,11 @@ function Navbar(props) {
   const [homeLink, setHomeLink] = useState("/");
   const [name, setName] = useState("");
 
-  const getUser = async () => {
-    let data = await fetch("http://127.0.0.1:5000/getuser", {
-      method: "GET",
-      headers: {
-        "Authorization": localStorage.getItem('token'),
-        "Admin": props.adminSession
-      },
-    });
-    if (data.status === 200) {
-      data = await data.json();
-      localStorage.setItem("details", JSON.stringify(data.user));
-      setName(data.user.name);
-    }
-  }
-
   useEffect(() => {
     if (props.logged) {
-      getUser();
+      let user = localStorage.getItem('user');
+      user = JSON.parse(user)
+      setName(user.name);
       if (!props.adminSession) {
         setHomeLink("/studenthero");
       }
@@ -41,7 +29,8 @@ function Navbar(props) {
     props.setLogged(false);
     props.setAdminSession(0);
     localStorage.removeItem('token');
-    localStorage.removeItem('order_id');
+    localStorage.removeItem('user');
+    googleLogout();
     navigate("/");
   }
 

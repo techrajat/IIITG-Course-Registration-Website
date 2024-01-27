@@ -8,7 +8,7 @@ function Payment(props) {
   const [load, setLoad] = useState(false);
 
   const payment = (order_id) => {
-    const user = JSON.parse(localStorage.getItem("details"));
+    const user = JSON.parse(localStorage.getItem('user'));
     const options = {
       "key": process.env.REACT_APP_Razor_key_id,
       "amount": `${parseFloat(process.env.REACT_APP_Total_Fee) * 100}`, // Amount should be in paise
@@ -30,8 +30,8 @@ function Payment(props) {
         "color": "#3399cc"
       }
     };
-    const rzp1 = new Razorpay(options);
-    rzp1.open();
+    const rzp = new Razorpay(options);
+    rzp.open();
   };
 
   const createBill=async()=>{
@@ -41,8 +41,7 @@ function Payment(props) {
       method: "POST",
       headers: { 
         "Content-Type": "application/x-www-form-urlencoded",
-        "Authorization": localStorage.getItem('token'),
-        "Admin": props.adminSession
+        "Authorization": localStorage.getItem('token')
       },
       body: `amount=${encodeURIComponent(parseFloat(process.env.REACT_APP_Total_Fee) * 100)}` // Amount should be in paise
     });

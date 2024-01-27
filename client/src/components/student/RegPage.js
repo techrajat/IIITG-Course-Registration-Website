@@ -8,15 +8,14 @@ function RegPage(props) {
   const [course, setCourse] = useState({});
 
   const getCourse = async () => {
-    const details = JSON.parse(localStorage.getItem('details'));
+    const user = JSON.parse(localStorage.getItem('user'));
     let data = await fetch("http://127.0.0.1:5000/getcourse", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        "Authorization": localStorage.getItem('token'),
-        "Admin": props.adminSession
+        "Authorization": localStorage.getItem('token')
       },
-      body: `sem=${encodeURIComponent(details.semester + 1)}&branch=${encodeURIComponent(details.branch)}`
+      body: `sem=${encodeURIComponent(user.semester + 1)}&branch=${encodeURIComponent(user.branch)}`
     });
     if (data.status === 200) {
       data = await data.json();
@@ -28,7 +27,7 @@ function RegPage(props) {
     if(localStorage.getItem('token')){
       props.setLogged(true);
     }
-    setUser(JSON.parse(localStorage.getItem('details')));
+    setUser(JSON.parse(localStorage.getItem('user')));
     getCourse();
     //eslint-disable-next-line
   }, []);
