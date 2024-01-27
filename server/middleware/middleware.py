@@ -1,15 +1,13 @@
 from flask import *
-from bson import ObjectId
-import jwt
+import requests
 import os
 from dotenv import load_dotenv
 load_dotenv()
-JWT_Secret = os.environ.get("JWT_Secret")
 import pymongo
 mongodb_conn_string = os.environ.get("mongodb_conn_string")
 myclient = pymongo.MongoClient(mongodb_conn_string)
 mydb = myclient['IIITG']
-student = mydb['Credentials']
+students = mydb['Students']
 adminCred = mydb['Admin']
 
 class AuthenticationMiddleware:
@@ -17,24 +15,25 @@ class AuthenticationMiddleware:
         self.app = app
 
     def __call__(self, environ, start_response):
-        isAdmin = environ.get('HTTP_ADMIN')
-        if(isAdmin and int(isAdmin) == 1):
-            collection = adminCred
-        else:
-            collection = student
-        # Extract the authorization token from the 'Authorization' header :-
         authorization_header = environ.get('HTTP_AUTHORIZATION')
         if authorization_header:
-            token = authorization_header
-            user = jwt.decode(token, JWT_Secret, algorithms="HS256")
-            id = ObjectId(user['id'])
-            user = collection.find_one({"_id": id})
-            if(user):
-                user.pop("password") # Remove password before sending user details to the endpoint
-                environ['user'] = user
-                return self.app(environ, start_response)
+            access_token = authorization_header
+            url = f"https://www.googleapis.com/oauth2/v1/userinfo?access_token={access_token}"
+            headers = {
+                'Authorization': f'Bearer {access_token}',
+                'Accept': 'application/json',
+            }
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+                user_info = response.json()
+                user = students.find_one({'email': user_info['email']}, {'_id': 0})
+                if not user:
+                    user = adminCred.find_one({'email': user_info['email']}, {'_id': 0})
+                    user['admin'] = 1
+                if(user):
+                    environ['user'] = user
+                    return self.app(environ, start_response)
             else:
-                # Handle unauthorized access
                 res = Response(u'Authorization failed', mimetype= 'text/plain', status=401)
                 return res(environ, start_response)
         

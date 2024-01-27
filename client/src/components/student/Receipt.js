@@ -8,8 +8,7 @@ function Receipt(props) {
     let data = await fetch(`http://127.0.0.1:5000/receipt`, {
       method: "GET",
       headers: {
-        "Authorization": localStorage.getItem('token'),
-        "Admin": props.adminSession
+        "Authorization": localStorage.getItem('token')
       }
     });
     if(data.status === 200){

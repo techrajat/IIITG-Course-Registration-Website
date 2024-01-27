@@ -2,30 +2,32 @@ import { React, useState, useEffect } from 'react';
 import '../../App.css';
 
 function Status(props) {
-    const [isChecked, setIsChecked] = useState(true);
-
-    const handleCheckboxChange = (event) => {
-        setIsChecked(event.target.checked);
-    };
-
     const [students, setStudents] = useState([]);
 
-    const getStudents = async (reg) => {
-        let endpoint = "";
-        if (reg === true) {
-            endpoint = "http://127.0.0.1:5000/registered";
-        }
-        else {
-            endpoint = "http://127.0.0.1:5000/unregistered";
-        }
-        let data = await fetch(endpoint, {
+    const getRegisteredStudents = async () => {
+        let data = await fetch("http://127.0.0.1:5000/registered", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
-                "Authorization": localStorage.getItem('token'),
-                "Admin": props.adminSession
+                "Authorization": localStorage.getItem('token')
             },
-            body: `sem=${encodeURIComponent(props.sem)}`
+            body: `sem=${encodeURIComponent(localStorage.getItem('semester'))}`
+        });
+        if (data.status === 200) {
+            data = await data.json();
+            data = data.result;
+            setStudents(data);
+        }
+    };
+
+    const getUnregisteredStudents = async () => {
+        let data = await fetch("http://127.0.0.1:5000/unregistered", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": localStorage.getItem('token')
+            },
+            body: `sem=${encodeURIComponent(localStorage.getItem('semester'))}`
         });
         if (data.status === 200) {
             data = await data.json();
@@ -35,26 +37,22 @@ function Status(props) {
     };
 
     useEffect(() => {
-        getStudents(isChecked);
-
-        if (isChecked) {
-            document.querySelector(".allotBtn button").style.display = "block";
-        }
-        else {
-            document.querySelector(".allotBtn button").style.display = "none";
+        if (localStorage.getItem('token')) {
+          props.setLogged(true);
+          props.setAdminSession(true);
         }
         //eslint-disable-next-line
-    }, [isChecked]);
+      }, []);
 
     return (
         <div className="status">
             <div className="choose">
                 <div className="form-check form-check-inline">
-                    <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked={isChecked} onClick={() => { setIsChecked(true) }} onChange={handleCheckboxChange} />
+                    <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" defaultChecked={true} onClick={getRegisteredStudents} />
                     <label className="form-check-label" htmlFor="inlineRadio1"><b>Regsitered</b></label>
                 </div>
                 <div className="form-check form-check-inline">
-                    <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" onClick={() => { setIsChecked(false) }} />
+                    <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" onClick={getUnregisteredStudents} />
                     <label className="form-check-label" htmlFor="inlineRadio2"><b>Unregsitered</b></label>
                 </div>
             </div>

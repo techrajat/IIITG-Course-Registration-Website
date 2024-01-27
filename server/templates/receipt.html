@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+    integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+    }
+
+    #receiptContainer {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #receipt {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-bottom: 20px;
+      width: 98vw;
+    }
+
+    #receipt h1 {
+      margin-bottom: 25px;
+    }
+
+    #receiptContainer button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #receiptContainer button:hover {
+      background-color: #45a049;
+    }
+
+    #homeLink {
+      margin: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="receiptContainer">
+    <div id="receipt">
+      <h1>Payment Receipt</h1>
+      <p><strong>Payment ID: </strong> <span id="transactionId">{{ razorpay_payment_id }}</span></p>
+      <p><strong>Order ID: </strong> <span id="transactionId">{{ razorpay_order_id }}</span></p>
+      <p><strong>Name: </strong><span id="transactionDate">{{ name }}</span></p>
+      <p><strong>Roll Number: </strong><span id="transactionDate">{{ roll_number }}</span></p>
+      <p><strong>Date: </strong><span id="transactionDate">{{ date }}</span></p>
+      <p><strong>Time: </strong><span id="transactionDate">{{ time }}</span></p>
+      <p><strong>Amount: </strong><span id="transactionAmount">&#8377;{{ amount }}</span></p>
+    </div>
+    <button id="downloadButton" onClick="printReceipt()">Download Receipt</button>
+    <div id="homeLink"><a href="http://localhost:3000/studenthero">Go back to home</a></div>
+  </div>
+  <script>
+    const printReceipt = () => {
+      const receiptElement = document.getElementById('receipt');
+      html2pdf(receiptElement);
+    }
+  </script>
+</body>
+
+</html>
