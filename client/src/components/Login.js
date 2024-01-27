@@ -33,16 +33,21 @@ function Login(props) {
           navigate('/studenthero');
         }
       }
+      else{
+        data = await data.json();
+        document.getElementById('warn').innerHTML = data.error;
+      }
     }
   };
 
   return (
     <div className="login-page">
-      <div class="container">
+      <div className="container">
         <h1>Sign in with Google</h1>
-        <button type="button" class="login-with-google-btn" onClick={() => googleSignIn()}>
+        <button type="button" className="login-with-google-btn" onClick={() => googleSignIn()}>
           Sign in with Google
         </button>
+        <p id="warn"></p>
       </div>
     </div>
   );

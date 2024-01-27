@@ -29,7 +29,8 @@ class AuthenticationMiddleware:
                 user = students.find_one({'email': user_info['email']}, {'_id': 0})
                 if not user:
                     user = adminCred.find_one({'email': user_info['email']}, {'_id': 0})
-                    user['admin'] = 1
+                    if user:
+                        user['admin'] = 1
                 if(user):
                     environ['user'] = user
                     return self.app(environ, start_response)

@@ -185,6 +185,12 @@
     }
 }
 
+#warn {
+    color: red;
+    font-size: larger;
+    font-weight: bold;
+}
+
 .studentRegOptions {
     text-align: center;
     height: 100vh;
