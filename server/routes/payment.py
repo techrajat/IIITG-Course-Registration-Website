@@ -15,6 +15,7 @@ myclient = pymongo.MongoClient(mongodb_conn_string)
 db = myclient['IIITG']
 students = db['Students']
 paymentsDB = db['Payments']
+uploadedReceipts = db['UploadedReceipts']
 
 from datetime import date, datetime
 import pytz
@@ -86,5 +87,17 @@ def paystatus():
             return {"result": "Paid"}, 200
         else:
             return {"result": "Not paid"}, 400
+    except:
+        return {"error": "Server error"}, 500
+    
+@pay_bp.route("/uploadreceipt", methods=['POST'])
+def uploadreceipt():
+    try:
+        user = request.environ['user']
+        if(not user):
+          return {"error": "Authentication failed"}, 400
+        details = request.form
+        uploadedReceipts.insert_one({'name': user['name'], 'email': user['email'], 'roll_number': user['roll_number'], 'semester': user['semester'], 'reference_number': details['ref'], 'date_of_payment': details['date_of_payment'], 'receipt': details['receipt']})
+        return {"success": "Receipt uploaded"}, 200
     except:
         return {"error": "Server error"}, 500

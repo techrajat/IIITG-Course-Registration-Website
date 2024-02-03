@@ -26,11 +26,11 @@ class AuthenticationMiddleware:
             response = requests.get(url, headers=headers)
             if response.status_code == 200:
                 user_info = response.json()
-                user = students.find_one({'email': user_info['email']}, {'_id': 0})
-                if not user:
-                    user = adminCred.find_one({'email': user_info['email']}, {'_id': 0})
-                    if user:
-                        user['admin'] = 1
+                user = adminCred.find_one({'email': user_info['email']}, {'_id': 0})
+                if user:
+                    user['admin'] = 1
+                else:
+                    user = students.find_one({'email': user_info['email']}, {'_id': 0})
                 if(user):
                     environ['user'] = user
                     return self.app(environ, start_response)
