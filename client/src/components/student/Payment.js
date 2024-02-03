@@ -1,8 +1,10 @@
 import { React, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useRazorpay from "react-razorpay";
 import { ClipLoader } from 'react-spinners';
 
 function Payment(props) {
+  const navigate = useNavigate();
   const [Razorpay] = useRazorpay();
 
   const [load, setLoad] = useState(false);
@@ -81,6 +83,8 @@ function Payment(props) {
           <span>&#8377;{parseFloat(process.env.REACT_APP_Total_Fee).toFixed(2)}</span>
         </div>
         <button id="payFinal" onClick={createBill}><ClipLoader loading={load} size={20}/><span id="btnText">Proceed to Payment</span></button>
+        <div id="payOrReceipt">or</div>
+        <button><span id="btnText" onClick={()=>{navigate('/uploadreceipt')}}>Enter Payment Details</span></button>
       </div>
     </div>
   );
