@@ -210,6 +210,11 @@
     margin: 15px
 }
 
+#underVerification {
+    font-size: large;
+    font-weight: bold;
+}
+
 .option {
     width: 200px;
     padding: 20px;

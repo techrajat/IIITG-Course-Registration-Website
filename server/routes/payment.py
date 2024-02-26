@@ -82,11 +82,14 @@ def paystatus():
         user = request.environ['user']
         if(not user):
           return {"error": "Authentication failed"}, 400
-        receipt = paymentsDB.find_one({'roll_number': user['roll_number']}, {'_id': 0})
-        if receipt:
+        paid = paymentsDB.find_one({'roll_number': user['roll_number']}, {'_id': 0})
+        receiptUploaded = uploadedReceipts.find_one({'roll_number': user['roll_number']}, {'_id': 0})
+        if paid:
             return {"result": "Paid"}, 200
+        elif receiptUploaded:
+            return {"result": "Uploaded"}, 400
         else:
-            return {"result": "Not paid"}, 400
+            return {"result": "Not paid"}, 401
     except:
         return {"error": "Server error"}, 500
     
@@ -97,7 +100,11 @@ def uploadreceipt():
         if(not user):
           return {"error": "Authentication failed"}, 400
         details = request.form
-        uploadedReceipts.insert_one({'name': user['name'], 'email': user['email'], 'roll_number': user['roll_number'], 'semester': user['semester'], 'reference_number': details['ref'], 'date_of_payment': details['date_of_payment'], 'receipt': details['receipt']})
+        parsed_files = json.loads(details['files'])
+        files = []
+        for _, value in parsed_files.items():
+            files.append(value)
+        uploadedReceipts.insert_one({'name': user['name'], 'email': user['email'], 'roll_number': user['roll_number'], 'semester': user['semester'], 'reference_number': details['ref'], 'date_of_payment': details['date_of_payment'], 'receipt': files})
         return {"success": "Receipt uploaded"}, 200
     except:
         return {"error": "Server error"}, 500

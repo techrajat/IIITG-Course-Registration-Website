@@ -11,30 +11,36 @@ function UploadReceipt(props) {
         //eslint-disable-next-line
     }, []);
 
-    const sendReceipt = (event) => {
+    const sendReceipt = async (event) => {
         event.preventDefault();
         const fileInput = document.getElementById('fileUploadBtn');
         if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                const fileSource = e.target.result;
-                const dateInput = document.getElementById('dateOfPayment');
-                const [year, month, day] = dateInput.value.split('-');
-                const formattedDate = `${day}-${month}-${year}`;
-                let data = await fetch("http://127.0.0.1:5000/uploadreceipt", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                        "Authorization": localStorage.getItem('token')
-                    },
-                    body: `ref=${encodeURIComponent(document.getElementById('referenceNumber').value)}&date_of_payment=${encodeURIComponent(formattedDate)}&receipt=${encodeURIComponent(fileSource)}`
-                });
-                if (data.status === 200) {
-                    navigate('/studenthero');
-                }
-            };
-            reader.readAsDataURL(file);
+            const filesJson = {};
+            const files = fileInput.files;
+            files.forEach((file, index) => {
+                let reader = new FileReader();
+                reader.onload = async (e) => {
+                    const fileSource = e.target.result;
+                    filesJson[index] = fileSource;
+                    if (Object.keys(filesJson).length === files.length) {
+                        const dateInput = document.getElementById('dateOfPayment');
+                        const [year, month, day] = dateInput.value.split('-');
+                        const formattedDate = `${day}-${month}-${year}`;
+                        let data = await fetch("http://127.0.0.1:5000/uploadreceipt", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded",
+                                "Authorization": localStorage.getItem('token')
+                            },
+                            body: `ref=${encodeURIComponent(document.getElementById('referenceNumber').value)}&date_of_payment=${encodeURIComponent(formattedDate)}&files=${encodeURIComponent(JSON.stringify(filesJson))}`
+                        });
+                        if (data.status === 200) {
+                            navigate('/studenthero');
+                        }
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
         }
     }
 
@@ -52,7 +58,7 @@ function UploadReceipt(props) {
                     </div>
                     <div className="upload-group">
                         <label htmlFor="fileUploadBtn">Upload Receipt:</label>
-                        <input type="file" id="fileUploadBtn" name="receipt" required />
+                        <input type="file" id="fileUploadBtn" multiple name="receipt" required />
                     </div>
                     <button>Submit</button>
                 </form>
