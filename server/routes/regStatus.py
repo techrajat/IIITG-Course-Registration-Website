@@ -18,7 +18,7 @@ def registered():
         if(not user):
           return {"error": "Authentication failed"}, 400  
         semester = request.form['sem']
-        students = collection.find({"semester": int(semester), "status": 1})
+        students = collection.find({"semester": int(semester), "status": 1}, {'_id': 0})
         students = list(students)
         result = [dict(student) for student in students]
     except:

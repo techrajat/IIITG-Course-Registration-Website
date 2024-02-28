@@ -12,14 +12,20 @@ function StudentHero(props) {
         "Authorization": localStorage.getItem('token')
       },
     });
-    if (data.status === 200) {
-      document.getElementById('courseRegBtn').style.display = 'none';
-      document.getElementById('allotted').style.display = 'block';
-      document.getElementById('payStatus').style.display = 'block';
-    }
-    if (data.status === 400) {
-      document.getElementById('courseRegBtn').style.display = 'none';
-      document.getElementById('underVerification').style.display = 'block';
+    if (document.getElementById('courseRegBtn') && document.getElementById('allotted') && document.getElementById('payStatus') && document.getElementById('underVerification')) {
+      if (data.status === 200) {
+        document.getElementById('courseRegBtn').style.display = 'none';
+        document.getElementById('allotted').style.display = 'block';
+      }
+      else if (data.status === 201) {
+        document.getElementById('courseRegBtn').style.display = 'none';
+        document.getElementById('allotted').style.display = 'block';
+        document.getElementById('payStatus').style.display = 'block';
+      }
+      else if (data.status === 202) {
+        document.getElementById('courseRegBtn').style.display = 'none';
+        document.getElementById('underVerification').style.display = 'block';
+      }
     }
   }
 
