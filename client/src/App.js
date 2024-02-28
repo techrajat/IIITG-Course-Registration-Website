@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Login from './components/Login';
 import AdminHero from './components/admin/AdminHero';
 import Status from './components/admin/Status';
+import VerifyAllot from './components/admin/VerifyAllot';
 import StudentHero from './components/student/StudentHero';
 import RegPage from './components/student/RegPage';
 import Payment from './components/student/Payment';
@@ -23,6 +24,7 @@ function App() {
           <Route exact path='/' element={<Login setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
           <Route exact path='/adminhero' element={<AdminHero setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
           <Route exact path='/status' element={<Status setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
+          <Route exact path='/verify' element={<VerifyAllot setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
           <Route exact path='/studenthero' element={<StudentHero setLogged={setLogged} />}></Route>
           <Route exact path='/regpage' element={<RegPage setLogged={setLogged} />}></Route>
           <Route exact path='/payment' element={<Payment setLogged={setLogged} />}></Route>

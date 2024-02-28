@@ -1,7 +1,9 @@
 import { React, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../App.css';
 
 function Status(props) {
+    const navigate = useNavigate();
     const [students, setStudents] = useState([]);
 
     const getRegisteredStudents = async () => {
@@ -38,11 +40,12 @@ function Status(props) {
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
-          props.setLogged(true);
-          props.setAdminSession(true);
+            props.setLogged(true);
+            props.setAdminSession(true);
         }
+        getRegisteredStudents();
         //eslint-disable-next-line
-      }, []);
+    }, []);
 
     return (
         <div className="status">
@@ -56,28 +59,33 @@ function Status(props) {
                     <label className="form-check-label" htmlFor="inlineRadio2"><b>Unregsitered</b></label>
                 </div>
             </div>
-            <table className="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Roll no.</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Selected elective</th>
-                        <th scope="col">Allotted elective</th>
-                    </tr>
-                </thead>
-                <tbody className="table-group-divider">
-                    {students.map((element) => {
-                        return <tr key={element.roll_number}>
-                            <td>{element.roll_number}</td>
-                            <td>{element.name}</td>
-                            <td>{!element.selected_elective ? "NA" : element.selected_elective}</td>
-                            <td>{!element.allotted_elective ? "NA" : element.allotted_elective}</td>
+            <div className="table-container">
+                <table className="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">S. no.</th>
+                            <th scope="col">Roll no.</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Selected elective</th>
+                            <th scope="col">Allotted elective</th>
                         </tr>
-                    })}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody className="table-group-divider">
+                        {students.map((element, index) => {
+                            return <tr key={element.roll_number}>
+                                <td>{index + 1}</td>
+                                <td>{element.roll_number}</td>
+                                <td>{element.name}</td>
+                                <td>{!element.selected_elective ? "NA" : element.selected_elective}</td>
+                                <td>{!element.allotted_elective ? "NA" : element.allotted_elective}</td>
+                            </tr>
+                        })}
+                    </tbody>
+                </table>
+            </div>
             <div className="allotBtn">
-                <button type="button" className="btn btn-success">Allocate Electives</button>
+                <button type="button" className="btn btn-success my-2">Allocate Electives</button>
+                <button type="button" className="btn btn-success my-2" onClick={()=>{navigate('/verify')}}>Verify Payments</button>
             </div>
         </div>
     );

@@ -57,8 +57,8 @@ function UploadReceipt(props) {
                         <input type="date" id="dateOfPayment" name="date_of_payment" required />
                     </div>
                     <div className="upload-group">
-                        <label htmlFor="fileUploadBtn">Upload Receipt:</label>
-                        <input type="file" id="fileUploadBtn" multiple name="receipt" required />
+                        <label htmlFor="fileUploadBtn">Upload Receipt(s) in pdf format:</label>
+                        <input type="file" accept="application/pdf" id="fileUploadBtn" multiple name="receipt" required />
                     </div>
                     <button>Submit</button>
                 </form>

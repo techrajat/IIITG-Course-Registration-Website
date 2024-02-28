@@ -14,6 +14,7 @@ mongodb_conn_string = os.environ.get('mongodb_conn_string')
 myclient = pymongo.MongoClient(mongodb_conn_string)
 db = myclient['IIITG']
 students = db['Students']
+regStatus = db['RegStatus']
 paymentsDB = db['Payments']
 uploadedReceipts = db['UploadedReceipts']
 
@@ -52,6 +53,10 @@ def payment(roll):
         details = request.form
         generated_signature = hmac_sha256(details['razorpay_order_id'] + "|" + details['razorpay_payment_id'], Razor_key_secret)
         if (generated_signature == details['razorpay_signature']):
+            try:
+                regStatus.update_one({'roll_number': roll}, {'$set': {'status': 1}})
+            except:
+                return {"error": "Student not found"}, 500
             user = students.find_one({'roll_number': roll}, {'_id': 0})
             today = date.today()
             today = today.strftime("%d-%m-%Y")
@@ -82,14 +87,16 @@ def paystatus():
         user = request.environ['user']
         if(not user):
           return {"error": "Authentication failed"}, 400
-        paid = paymentsDB.find_one({'roll_number': user['roll_number']}, {'_id': 0})
+        paid = regStatus.find_one({'roll_number': user['roll_number']}, {'_id': 0})
         receiptUploaded = uploadedReceipts.find_one({'roll_number': user['roll_number']}, {'_id': 0})
-        if paid:
-            return {"result": "Paid"}, 200
-        elif receiptUploaded:
-            return {"result": "Uploaded"}, 400
+        if receiptUploaded and receiptUploaded['verified'] == 1:
+            return {"result": "Receipt verified"}, 200
+        elif paid['status'] == 1:
+            return {"result": "Paid with RazorPay"}, 201
+        elif receiptUploaded and receiptUploaded['verified'] == 0:
+            return {"result": "Uploaded"}, 202
         else:
-            return {"result": "Not paid"}, 401
+            return {"result": "Not paid"}, 400
     except:
         return {"error": "Server error"}, 500
     
@@ -104,7 +111,37 @@ def uploadreceipt():
         files = []
         for _, value in parsed_files.items():
             files.append(value)
-        uploadedReceipts.insert_one({'name': user['name'], 'email': user['email'], 'roll_number': user['roll_number'], 'semester': user['semester'], 'reference_number': details['ref'], 'date_of_payment': details['date_of_payment'], 'receipt': files})
+        uploadedReceipts.insert_one({'name': user['name'], 'email': user['email'], 'roll_number': user['roll_number'], 'semester': user['semester'], 'reference_number': details['ref'], 'date_of_payment': details['date_of_payment'], 'receipt': files, 'verified': 0})
         return {"success": "Receipt uploaded"}, 200
+    except:
+        return {"error": "Server error"}, 500
+    
+@pay_bp.route("/getuploadedreceipts", methods=['POST'])
+def getuploadedreceipts():
+    try:
+        user = request.environ['user']
+        if(not user):
+          return {"error": "Authentication failed"}, 400
+        semester = request.form['sem']
+        receipts = uploadedReceipts.find({"semester": int(semester)}, {'_id': 0})
+        receipts = list(receipts)
+        result = [dict(receipt) for receipt in receipts]
+        return {"result": result}, 200
+    except:
+        return {"error": "Server error"}, 500
+    
+@pay_bp.route("/verifypayment", methods=['POST'])
+def verifypayment():
+    try:
+        user = request.environ['user']
+        if(not user):
+          return {"error": "Authentication failed"}, 400
+        roll = request.form['roll']
+        try:
+            regStatus.update_one({'roll_number': roll}, {'$set': {'status': 1}})
+            uploadedReceipts.update_one({'roll_number': roll}, {'$set': {'verified': 1}})
+        except:
+            return {"error": "Student not found"}, 500
+        return {"result": "Payment verified"}, 200
     except:
         return {"error": "Server error"}, 500
