@@ -182,7 +182,15 @@
     width: 170px;
 }
 
-#verification {
+.adminNavBtn {
+    text-align: center;
+}
+
+.adminNavBtn button {
+    width: 190px;
+}
+
+#verification, #verifiedReceipts {
     margin-top: 100px;
 }
 
@@ -480,4 +488,10 @@
 
 .upload-form button:hover {
     background-color: #0056b3;
+}
+
+#alreadySubmittedWarn {
+    padding-top: 10px;
+    color: red;
+    font-weight: bold;
 }

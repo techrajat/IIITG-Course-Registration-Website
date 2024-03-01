@@ -87,7 +87,7 @@ function VerifyDeclinePayment(props) {
 
     return (
         <div id="verification">
-            <div className="table-container">
+            <div className="table-container mb-5">
                 <table className="table table-hover">
                     <thead>
                         <tr>
@@ -121,7 +121,8 @@ function VerifyDeclinePayment(props) {
                     </tbody>
                 </table>
             </div>
-            <div style={{ textAlign: 'center' }}><button type="button" className="btn btn-success my-2" onClick={() => { navigate('/status') }}>Go Back</button></div>
+            <div className="adminNavBtn"><button type="button" className="btn btn-success my-2" onClick={() => { navigate('/verified') }}>View Verified Payments</button></div>
+            <div className="adminNavBtn"><button type="button" className="btn btn-success my-2" onClick={() => { navigate('/status') }}>Go Back</button></div>
         </div>
     );
 }
