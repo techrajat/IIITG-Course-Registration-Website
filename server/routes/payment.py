@@ -110,16 +110,13 @@ def payment(roll, electives):
 def selectelectives(electives):
     user = request.environ["user"]
     try:
-        selectElectives = regStatus.update_one(
+        regStatus.update_one(
             {"roll_number": user["roll_number"]},
             {"$set": {"selected_elective": json.loads(electives)}},
         )
     except:
         return {"error": "Student not found"}, 500
-    if selectElectives.modified_count == 1:
-        return {"success": "Electives selected successfully"}, 200
-    else:
-        return {"error": "Electives not selected"}, 400
+    return {"success": "Electives selected successfully"}, 200
 
 
 @pay_bp.route("/paystatus")

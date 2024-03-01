@@ -39,6 +39,7 @@ function Payment(props) {
   const createBill=async()=>{
     setLoad(true);
     document.getElementById("btnText").innerHTML = "Processing";
+    document.getElementById("payBtn").disabled = true;
     let data = await fetch("http://127.0.0.1:5000/createbill", {
       method: "POST",
       headers: { 
@@ -51,6 +52,7 @@ function Payment(props) {
       data = await data.json();
       payment(data.order_id);
       setLoad(false);
+      document.getElementById("payBtn").disabled = false;
       document.getElementById("btnText").innerHTML = "Proceed to Payment";
     }
   };
@@ -84,7 +86,7 @@ function Payment(props) {
         </div>
         <button id="payFinal" onClick={createBill}><ClipLoader loading={load} size={20}/><span id="btnText">Proceed to Payment</span></button>
         <div id="payOrReceipt">or</div>
-        <button onClick={()=>{navigate('/uploadreceipt')}}><span id="btnText">Enter Payment Details</span></button>
+        <button id="payBtn" onClick={()=>{navigate('/uploadreceipt')}}><span id="btnText">Enter Payment Details</span></button>
       </div>
     </div>
   );

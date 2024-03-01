@@ -55,11 +55,6 @@ function StudentHero(props) {
         document.getElementById('courseRegBtn').style.display = 'none';
         document.getElementById('underVerification').style.display = 'block';
       }
-      // else if (data.status === 204) {
-      //   setMessage(parsedData);
-      //   setOpenModal(true);
-      //   document.getElementById('courseRegBtn').style.display = 'block';
-      // }
     }
   }
 

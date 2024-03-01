@@ -1,8 +1,10 @@
-import { React, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ClipLoader } from 'react-spinners';
 
 function UploadReceipt(props) {
     const navigate = useNavigate();
+    const [load, setLoad] = useState(false);
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
@@ -13,6 +15,9 @@ function UploadReceipt(props) {
 
     const sendReceipt = async (event) => {
         event.preventDefault();
+        document.getElementById('recSubmitSpan').innerHTML = 'Submitting';
+        document.getElementById('recSubmitBtn').disabled = true;
+        setLoad(true);
         const fileInput = document.getElementById('fileUploadBtn');
         if (fileInput.files.length > 0) {
             const filesJson = {};
@@ -42,9 +47,16 @@ function UploadReceipt(props) {
                                     "Authorization": localStorage.getItem('token')
                                 }
                             });
-                            if (selectElective.status === 200){
+                            if (selectElective.status === 200) {
                                 navigate('/studenthero');
                             }
+                        }
+                        else if(data.status === 401) {
+                            data = await data.json();
+                            document.getElementById('alreadySubmittedWarn').innerHTML = data.error;
+                            document.getElementById('recSubmitSpan').innerHTML = 'Submit';
+                            setLoad(false);
+                            document.getElementById('recSubmitBtn').disabled = false;
                         }
                     }
                 };
@@ -69,7 +81,8 @@ function UploadReceipt(props) {
                         <label htmlFor="fileUploadBtn">Upload Receipt(s) in pdf format:</label>
                         <input type="file" accept="application/pdf" id="fileUploadBtn" multiple name="receipt" required />
                     </div>
-                    <button>Submit</button>
+                    <button type="submit" id="recSubmitBtn"><ClipLoader loading={load} size={20} /> <span id="recSubmitSpan">Submit</span></button>
+                    <div style={{textAlign: 'center'}}><p id="alreadySubmittedWarn"></p></div>
                 </form>
             </div>
         </div>

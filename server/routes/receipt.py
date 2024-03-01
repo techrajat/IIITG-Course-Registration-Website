@@ -14,7 +14,7 @@ myclient = pymongo.MongoClient(mongodb_conn_string)
 db = myclient["IIITG"]
 paymentsDB = db["Payments"]
 uploadedReceipts = db["UploadedReceipts"]
-
+verifiedReceipts = db["VerifiedReceipts"]
 
 @receipt_bp.route("/getreceipt")
 def getreceipt():
@@ -27,7 +27,6 @@ def getreceipt():
     except:
         return {"error": "Server error"}, 500
 
-
 @receipt_bp.route("/uploadreceipt", methods=["POST"])
 def uploadreceipt():
     try:
@@ -39,6 +38,9 @@ def uploadreceipt():
         files = []
         for _, value in parsed_files.items():
             files.append(value)
+        alreadyUploaded = uploadedReceipts.find_one({"roll_number": user["roll_number"]}, {"_id": 0})
+        if alreadyUploaded is not None:
+            return {"error": "Receipt already uploaded"}, 401
         uploadedReceipts.insert_one(
             {
                 "name": user["name"],
@@ -57,7 +59,6 @@ def uploadreceipt():
     except:
         return {"error": "Server error"}, 500
 
-
 @receipt_bp.route("/deletereceipt")
 def deletereceipt():
     try:
@@ -72,7 +73,6 @@ def deletereceipt():
     except:
         return {"error": "Server error"}, 500
 
-
 @receipt_bp.route("/getuploadedreceipts", methods=["POST"])
 def getuploadedreceipts():
     try:
@@ -83,10 +83,22 @@ def getuploadedreceipts():
         receipts = uploadedReceipts.find({"semester": int(semester)}, {"_id": 0})
         receipts = list(receipts)
         result = [
-            dict(receipt)
-            for receipt in receipts
-            if receipt["verified"] != 1 and receipt["declined"] != 1
+            dict(receipt) for receipt in receipts if receipt["verified"] != 1 and receipt["declined"] != 1
         ]
+        return {"result": result}, 200
+    except:
+        return {"error": "Server error"}, 500
+
+@receipt_bp.route("/getverifiedpayments", methods=["POST"])
+def getverifiedpayments():
+    try:
+        user = request.environ["user"]
+        if not user:
+            return {"error": "Authentication failed"}, 400
+        semester = request.form["sem"]
+        receipts = verifiedReceipts.find({"semester": int(semester)}, {"_id": 0})
+        receipts = list(receipts)
+        result = [dict(receipt) for receipt in receipts]
         return {"result": result}, 200
     except:
         return {"error": "Server error"}, 500
