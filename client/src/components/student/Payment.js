@@ -19,7 +19,7 @@ function Payment(props) {
       "description": "Course Registration",
       "image": "https://upload.wikimedia.org/wikipedia/en/thumb/2/22/Indian_Institute_of_Information_Technology%2C_Guwahati_Logo.svg/1200px-Indian_Institute_of_Information_Technology%2C_Guwahati_Logo.svg.png",
       "order_id": order_id,
-      "callback_url": `http://127.0.0.1:5000/payment/${user.roll_number}`,
+      "callback_url": `http://127.0.0.1:5000/payment/${user.roll_number}/${localStorage.getItem('selectedElectives')}`,
       "prefill": {
         "name": user.name,
         "email": user.email,
@@ -84,7 +84,7 @@ function Payment(props) {
         </div>
         <button id="payFinal" onClick={createBill}><ClipLoader loading={load} size={20}/><span id="btnText">Proceed to Payment</span></button>
         <div id="payOrReceipt">or</div>
-        <button><span id="btnText" onClick={()=>{navigate('/uploadreceipt')}}>Enter Payment Details</span></button>
+        <button onClick={()=>{navigate('/uploadreceipt')}}><span id="btnText">Enter Payment Details</span></button>
       </div>
     </div>
   );

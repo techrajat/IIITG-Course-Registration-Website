@@ -32,9 +32,21 @@ function RegPage(props) {
     //eslint-disable-next-line
   }, []);
 
+  const submitRegForm=(event)=>{
+    event.preventDefault();
+    const selectedElectives = document.getElementsByClassName('selectedElectives');
+    let electives = [];
+    selectedElectives.forEach((element)=>{
+      let item = element.value.split('::');
+      electives.push({"code": item[0], "name": item[1]});
+    });
+    localStorage.setItem('selectedElectives', JSON.stringify(electives));
+    navigate('/payment');
+  };
+
   return (
     <div className="reg-form-container">
-      <form id="regForm" onSubmit={()=>{navigate('/payment')}}>
+      <form id="regForm" onSubmit={submitRegForm}>
         <label htmlFor="name"><span>*</span> Name:</label>
         <input type="text" id="name" name="name" value={(user.name) ? user.name : ""} disabled />
         <label htmlFor="email"><span>*</span> Email:</label>
@@ -55,10 +67,10 @@ function RegPage(props) {
         {Object.keys(course).length !== 0 && course.electives.map((element, index) => {
           return <div className="elective" key={index}>
             <label htmlFor="course"><span>*</span> Select elective/project:</label>
-            <select id="course" name="course" required>
+            <select id="course" className="selectedElectives" name="course" required>
               <option value="">Select an option</option>
               {element.map((e, i) => {
-                return <option key={i} value={e.code}>{e.code} ({e.name})</option>
+                return <option key={i} value={`${e.code}::${e.name}`}>{e.code} ({e.name})</option>
               })}
             </select>
           </div>

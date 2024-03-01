@@ -19,5 +19,11 @@ app.register_blueprint(courses.courses_bp)
 import routes.payment as payment
 app.register_blueprint(payment.pay_bp)
 
+import routes.receipt as receipt
+app.register_blueprint(receipt.receipt_bp)
+
+import routes.verify_payment as verify_payment
+app.register_blueprint(verify_payment.verify_bp)
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

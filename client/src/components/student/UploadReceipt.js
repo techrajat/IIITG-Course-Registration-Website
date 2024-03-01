@@ -35,7 +35,16 @@ function UploadReceipt(props) {
                             body: `ref=${encodeURIComponent(document.getElementById('referenceNumber').value)}&date_of_payment=${encodeURIComponent(formattedDate)}&files=${encodeURIComponent(JSON.stringify(filesJson))}`
                         });
                         if (data.status === 200) {
-                            navigate('/studenthero');
+                            let selectElective = await fetch(`http://127.0.0.1:5000/selectelectives/${localStorage.getItem('selectedElectives')}`, {
+                                method: "GET",
+                                headers: {
+                                    "Content-Type": "application/x-www-form-urlencoded",
+                                    "Authorization": localStorage.getItem('token')
+                                }
+                            });
+                            if (selectElective.status === 200){
+                                navigate('/studenthero');
+                            }
                         }
                     }
                 };
