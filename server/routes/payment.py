@@ -1,22 +1,27 @@
 from flask import *
+
 pay_bp = Blueprint("pay_bp", __name__)
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 import os
-Razor_key_id = os.environ.get('Razor_key_id')
-Razor_key_secret = os.environ.get('Razor_key_secret')
-Total_Fee = os.environ.get('Total_Fee')
+
+Razor_key_id = os.environ.get("Razor_key_id")
+Razor_key_secret = os.environ.get("Razor_key_secret")
+Total_Fee = os.environ.get("Total_Fee")
 
 import pymongo
-mongodb_conn_string = os.environ.get('mongodb_conn_string')
+
+mongodb_conn_string = os.environ.get("mongodb_conn_string")
 myclient = pymongo.MongoClient(mongodb_conn_string)
-db = myclient['IIITG']
-students = db['Students']
-regStatus = db['RegStatus']
-paymentsDB = db['Payments']
-uploadedReceipts = db['UploadedReceipts']
+db = myclient["IIITG"]
+students = db["Students"]
+regStatus = db["RegStatus"]
+paymentsDB = db["Payments"]
+uploadedReceipts = db["UploadedReceipts"]
+verifiedReceipts = db["VerifiedReceipts"]
 
 from datetime import date, datetime
 import pytz
@@ -25,123 +30,121 @@ import hmac
 import hashlib
 import razorpay
 
-@pay_bp.route("/createbill", methods=['POST'])
+
+@pay_bp.route("/createbill", methods=["POST"])
 def createbill():
     try:
-        user = request.environ['user']
-        if(not user):
-          return {"error": "Authentication failed"}, 400
-        amount = request.form['amount']
+        user = request.environ["user"]
+        if not user:
+            return {"error": "Authentication failed"}, 400
+        amount = request.form["amount"]
         client = razorpay.Client(auth=(Razor_key_id, Razor_key_secret))
-        DATA = {
-            "amount": amount,
-            "currency": "INR",
-            "receipt": "receipt#1"
-        }
+        DATA = {"amount": amount, "currency": "INR", "receipt": "receipt#1"}
         order_response = client.order.create(data=DATA)
-        order_id = order_response['id']
+        order_id = order_response["id"]
         return {"order_id": order_id}, 200
     except:
         return {"error": "Server error"}, 500
 
-def hmac_sha256(data, key):
-    return hmac.new(key.encode('utf-8'), data.encode('utf-8'), hashlib.sha256).hexdigest()
 
-@pay_bp.route("/payment/<roll>", methods=['POST'])
-def payment(roll):
+def hmac_sha256(data, key):
+    return hmac.new(
+        key.encode("utf-8"), data.encode("utf-8"), hashlib.sha256
+    ).hexdigest()
+
+
+@pay_bp.route("/payment/<roll>/<electives>", methods=["POST"])
+def payment(roll, electives):
     try:
         details = request.form
-        generated_signature = hmac_sha256(details['razorpay_order_id'] + "|" + details['razorpay_payment_id'], Razor_key_secret)
-        if (generated_signature == details['razorpay_signature']):
+        generated_signature = hmac_sha256(
+            details["razorpay_order_id"] + "|" + details["razorpay_payment_id"],
+            Razor_key_secret,
+        )
+        if generated_signature == details["razorpay_signature"]:
             try:
-                regStatus.update_one({'roll_number': roll}, {'$set': {'status': 1}})
+                regStatus.update_one(
+                    {"roll_number": roll},
+                    {"$set": {"status": 1, "selected_elective": json.loads(electives)}},
+                )
             except:
                 return {"error": "Student not found"}, 500
-            user = students.find_one({'roll_number': roll}, {'_id': 0})
+            user = students.find_one({"roll_number": roll}, {"_id": 0})
             today = date.today()
             today = today.strftime("%d-%m-%Y")
-            ist_timezone = pytz.timezone('Asia/Kolkata')
+            ist_timezone = pytz.timezone("Asia/Kolkata")
             current_time_ist = datetime.now(ist_timezone).time()
             formatted_time_ist = current_time_ist.strftime("%H:%M:%S")
-            paymentsDB.insert_one({'name': user['name'], 'email': user['email'], 'roll_number': user['roll_number'], 'semester': user['semester'], 'razorpay_payment_id': details['razorpay_payment_id'], 'razorpay_order_id': details['razorpay_order_id'], 'razorpay_signature': details['razorpay_signature'], 'date': today, 'time': formatted_time_ist})
-            return render_template('receipt.html', name=user['name'], email=user['email'], roll_number=user['roll_number'], razorpay_payment_id=details['razorpay_payment_id'], razorpay_order_id=details['razorpay_order_id'], razorpay_signature=details['razorpay_signature'], date=today, time=formatted_time_ist, amount=Total_Fee)
+            paymentsDB.insert_one(
+                {
+                    "name": user["name"],
+                    "email": user["email"],
+                    "roll_number": user["roll_number"],
+                    "semester": user["semester"],
+                    "razorpay_payment_id": details["razorpay_payment_id"],
+                    "razorpay_order_id": details["razorpay_order_id"],
+                    "razorpay_signature": details["razorpay_signature"],
+                    "date": today,
+                    "time": formatted_time_ist,
+                }
+            )
+            return render_template(
+                "receipt.html",
+                name=user["name"],
+                email=user["email"],
+                roll_number=user["roll_number"],
+                razorpay_payment_id=details["razorpay_payment_id"],
+                razorpay_order_id=details["razorpay_order_id"],
+                razorpay_signature=details["razorpay_signature"],
+                date=today,
+                time=formatted_time_ist,
+                amount=Total_Fee,
+            )
         else:
             return {"error": "Wrong signature"}, 400
     except:
         return {"error": "Server error"}, 500
-    
-@pay_bp.route("/receipt")
-def receipt():
+
+
+@pay_bp.route("/selectelectives/<electives>")
+def selectelectives(electives):
+    user = request.environ["user"]
     try:
-        user = request.environ['user']
-        if(not user):
-          return {"error": "Authentication failed"}, 400
-        receipt = paymentsDB.find_one({'roll_number': user['roll_number']}, {'_id': 0})
-        return {"result": receipt}, 200
+        selectElectives = regStatus.update_one(
+            {"roll_number": user["roll_number"]},
+            {"$set": {"selected_elective": json.loads(electives)}},
+        )
     except:
-        return {"error": "Server error"}, 500
-    
+        return {"error": "Student not found"}, 500
+    if selectElectives.modified_count == 1:
+        return {"success": "Electives selected successfully"}, 200
+    else:
+        return {"error": "Electives not selected"}, 400
+
+
 @pay_bp.route("/paystatus")
 def paystatus():
     try:
-        user = request.environ['user']
-        if(not user):
-          return {"error": "Authentication failed"}, 400
-        paid = regStatus.find_one({'roll_number': user['roll_number']}, {'_id': 0})
-        receiptUploaded = uploadedReceipts.find_one({'roll_number': user['roll_number']}, {'_id': 0})
-        if receiptUploaded and receiptUploaded['verified'] == 1:
-            return {"result": "Receipt verified"}, 200
-        elif paid['status'] == 1:
-            return {"result": "Paid with RazorPay"}, 201
-        elif receiptUploaded and receiptUploaded['verified'] == 0:
-            return {"result": "Uploaded"}, 202
+        user = request.environ["user"]
+        if not user:
+            return {"error": "Authentication failed"}, 400
+        paid = regStatus.find_one({"roll_number": user["roll_number"]}, {"_id": 0})
+        receiptUploaded = uploadedReceipts.find_one({"roll_number": user["roll_number"]}, {"_id": 0})
+        receiptVerified = verifiedReceipts.find_one({"roll_number": user["roll_number"]}, {"_id": 0})
+        if receiptUploaded and receiptUploaded["verified"] == 1:
+            return {"result": f"Your payment with reference number {receiptUploaded['reference_number']} has been verified."}, 200
+        if receiptVerified:
+            return {"result": "Receipt verified"}, 201
+        elif paid["status"] == 1:
+            return {"result": "Paid with RazorPay"}, 202
+        elif receiptUploaded and receiptUploaded["verified"] == 0 and receiptUploaded["declined"] == 0:
+            return {"result": "Uploaded"}, 203
+        elif receiptUploaded and receiptUploaded["declined"] == 1:
+            return jsonify({
+                "result": f"Your payment with reference number {receiptUploaded['reference_number']} has been declined.",
+                "reason": receiptUploaded['decline_reason']
+            }), 200
         else:
             return {"result": "Not paid"}, 400
-    except:
-        return {"error": "Server error"}, 500
-    
-@pay_bp.route("/uploadreceipt", methods=['POST'])
-def uploadreceipt():
-    try:
-        user = request.environ['user']
-        if(not user):
-          return {"error": "Authentication failed"}, 400
-        details = request.form
-        parsed_files = json.loads(details['files'])
-        files = []
-        for _, value in parsed_files.items():
-            files.append(value)
-        uploadedReceipts.insert_one({'name': user['name'], 'email': user['email'], 'roll_number': user['roll_number'], 'semester': user['semester'], 'reference_number': details['ref'], 'date_of_payment': details['date_of_payment'], 'receipt': files, 'verified': 0})
-        return {"success": "Receipt uploaded"}, 200
-    except:
-        return {"error": "Server error"}, 500
-    
-@pay_bp.route("/getuploadedreceipts", methods=['POST'])
-def getuploadedreceipts():
-    try:
-        user = request.environ['user']
-        if(not user):
-          return {"error": "Authentication failed"}, 400
-        semester = request.form['sem']
-        receipts = uploadedReceipts.find({"semester": int(semester)}, {'_id': 0})
-        receipts = list(receipts)
-        result = [dict(receipt) for receipt in receipts]
-        return {"result": result}, 200
-    except:
-        return {"error": "Server error"}, 500
-    
-@pay_bp.route("/verifypayment", methods=['POST'])
-def verifypayment():
-    try:
-        user = request.environ['user']
-        if(not user):
-          return {"error": "Authentication failed"}, 400
-        roll = request.form['roll']
-        try:
-            regStatus.update_one({'roll_number': roll}, {'$set': {'status': 1}})
-            uploadedReceipts.update_one({'roll_number': roll}, {'$set': {'verified': 1}})
-        except:
-            return {"error": "Student not found"}, 500
-        return {"result": "Payment verified"}, 200
     except:
         return {"error": "Server error"}, 500

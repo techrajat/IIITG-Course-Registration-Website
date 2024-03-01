@@ -66,8 +66,8 @@ function Status(props) {
                             <th scope="col">S. no.</th>
                             <th scope="col">Roll no.</th>
                             <th scope="col">Name</th>
-                            <th scope="col">Selected elective</th>
-                            <th scope="col">Allotted elective</th>
+                            <th scope="col">Selected electives</th>
+                            <th scope="col">Allotted electives</th>
                         </tr>
                     </thead>
                     <tbody className="table-group-divider">
@@ -76,7 +76,7 @@ function Status(props) {
                                 <td>{index + 1}</td>
                                 <td>{element.roll_number}</td>
                                 <td>{element.name}</td>
-                                <td>{!element.selected_elective ? "NA" : element.selected_elective}</td>
+                                <td>{!element.selected_elective ? "NA" : element.selected_elective.map((e)=>{return <>{`${e.code}: ${e.name}`}<br /></>;})}</td>
                                 <td>{!element.allotted_elective ? "NA" : element.allotted_elective}</td>
                             </tr>
                         })}
