@@ -190,7 +190,8 @@
     width: 190px;
 }
 
-#verification, #verifiedReceipts {
+#verification,
+#verifiedReceipts {
     margin-top: 100px;
 }
 
@@ -299,7 +300,7 @@
 }
 
 .reg-form-container {
-    max-width: 406px;
+    max-width: 408px;
     margin: 50px auto;
     margin-top: 100px;
     background-color: #fff;
@@ -342,6 +343,11 @@
 
 #regForm input[type="submit"]:hover {
     background-color: #45a049;
+}
+
+#sameElectiveWarn p {
+    font-weight: bold;
+    color: red;
 }
 
 #bill {
