@@ -24,7 +24,7 @@ function RegPage(props) {
   };
 
   useEffect(() => {
-    if(localStorage.getItem('token')){
+    if (localStorage.getItem('token')) {
       props.setLogged(true);
     }
     setUser(JSON.parse(localStorage.getItem('user')));
@@ -32,16 +32,39 @@ function RegPage(props) {
     //eslint-disable-next-line
   }, []);
 
-  const submitRegForm=(event)=>{
+  const validateForm = () => {
+    const selectedElectives = document.querySelectorAll('.selectedElectives');
+    let obj = {};
+    for (let element of selectedElectives) {
+      if (obj.hasOwnProperty(element.value)) {
+        return false;
+      }
+      obj[element.value] = 1;
+    }
+    return true;
+  };
+
+  const submitRegForm = (event) => {
     event.preventDefault();
-    const selectedElectives = document.getElementsByClassName('selectedElectives');
+    const selectedElectives = document.querySelectorAll('.selectedElectives');
     let electives = [];
-    selectedElectives.forEach((element)=>{
-      let item = element.value.split('::');
-      electives.push({"code": item[0], "name": item[1]});
+    let index = 0;
+    course.electives.forEach((element) => {
+      let order = [];
+      element.forEach((e, i) => {
+        let item = selectedElectives[index].value.split('::');
+        order.push({ "preference_order": i + 1, "code": item[0], "name": item[1] });
+        index++;
+      });
+      electives.push(order);
     });
-    localStorage.setItem('selectedElectives', JSON.stringify(electives));
-    navigate('/payment');
+    if (validateForm()) {
+      localStorage.setItem('selectedElectives', JSON.stringify(electives));
+      navigate('/payment');
+    }
+    else {
+      document.getElementById('sameElectiveWarn').style.display = 'block';
+    }
   };
 
   return (
@@ -66,16 +89,20 @@ function RegPage(props) {
         })}
         {Object.keys(course).length !== 0 && course.electives.map((element, index) => {
           return <div className="elective" key={index}>
-            <label htmlFor="course"><span>*</span> Select elective/project:</label>
-            <select id="course" className="selectedElectives" name="course" required>
-              <option value="">Select an option</option>
-              {element.map((e, i) => {
-                return <option key={i} value={`${e.code}::${e.name}`}>{e.code} ({e.name})</option>
-              })}
-            </select>
+            <label htmlFor="course"><span>*</span> Select preference order for elective/project {index + 1}:</label>
+            {element.map((ele, ind) => {
+              return <select id={`select${index}${ind}`} className="selectedElectives" name="course" key={ind} required>
+                <option value="">Select an option</option>
+                {element.map((e, i) => {
+                  return <option key={i} value={`${e.code}::${e.name}`}>{e.code} ({e.name})</option>
+                })}
+              </select>
+            })}
+
           </div>
         })}
         <input type="submit" value="Register and Pay" />
+        <div id="sameElectiveWarn" style={{ display: 'none' }}><p>You cannot choose the same elective multiple times.</p></div>
       </form>
     </div>
   );

@@ -65,7 +65,7 @@ def payment(roll, electives):
             try:
                 regStatus.update_one(
                     {"roll_number": roll},
-                    {"$set": {"status": 1, "selected_elective": json.loads(electives)}},
+                    {"$set": {"status": 1, "selected_elective": json.loads(electives)}}
                 )
             except:
                 return {"error": "Student not found"}, 500
@@ -112,7 +112,7 @@ def selectelectives(electives):
     try:
         regStatus.update_one(
             {"roll_number": user["roll_number"]},
-            {"$set": {"selected_elective": json.loads(electives)}},
+            {"$set": {"selected_elective": json.loads(electives)}}
         )
     except:
         return {"error": "Student not found"}, 500
