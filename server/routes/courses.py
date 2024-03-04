@@ -16,8 +16,8 @@ def registered():
     try:
         user = request.environ['user']
         if(not user):
-          return {"error": "Authentication failed"}, 400  
-        semester = request.form['sem']
+          return {"error": "Authentication failed"}, 400
+        semester = request.form['semester']
         branch = request.form['branch']
         course = collection.find_one({"semester": int(semester), "branch": branch}, {"_id": 0})
         return {"course": course}, 200

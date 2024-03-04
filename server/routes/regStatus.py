@@ -17,8 +17,9 @@ def registered():
         user = request.environ['user']
         if(not user):
           return {"error": "Authentication failed"}, 400  
-        semester = request.form['sem']
-        students = collection.find({"semester": int(semester), "status": 1}, {'_id': 0})
+        semester = request.form['semester']
+        branch = request.form['branch']
+        students = collection.find({"semester": int(semester), "branch": branch, "status": 1}, {'_id': 0})
         students = list(students)
         result = [dict(student) for student in students]
     except:
@@ -31,10 +32,24 @@ def unregistered():
         user = request.environ['user']
         if(not user):
           return {"error": "Authentication failed"}, 400
-        semester = request.form['sem']
-        students = collection.find({"semester": int(semester), "status": 0}, {'_id': 0})
+        semester = request.form['semester']
+        branch = request.form['branch']
+        students = collection.find({"semester": int(semester), "branch": branch, "status": 0}, {'_id': 0})
         students = list(students)
         result = [dict(student) for student in students]
         return {"result": result}, 200
+    except:
+        return {"error": "Server error"}, 500
+    
+@status_bp.route("/totalstudents", methods=['POST'])
+def totalstudents():
+    try:
+        user = request.environ['user']
+        if(not user):
+          return {"error": "Authentication failed"}, 400
+        semester = request.form['semester']
+        branch = request.form['branch']
+        num_students = collection.count_documents({"semester": int(semester), "branch": branch})
+        return {"result": num_students}, 200
     except:
         return {"error": "Server error"}, 500

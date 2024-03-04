@@ -10,6 +10,22 @@
     box-sizing: border-box;
     height: 100vh;
     background-color: #f3f3f3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.home form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.adminHeroSelect {
+    width: 320px;
+    margin: 8px;
 }
 
 .head {
@@ -50,15 +66,6 @@
     font-size: large;
 }
 
-.hero-section {
-    height: 100vh;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
 #custom-modal {
     width: 650px;
 }
@@ -84,50 +91,6 @@
     margin-top: 15px;
 }
 
-.dropbtn {
-    background-color: #04AA6D;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    margin-top: 20px;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 1;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown-content a:hover {
-    background-color: #ddd;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.dropdown:hover .dropbtn {
-    background-color: #3e8e41;
-}
 
 .choose {
     margin: 100px 30px 30px 30px;
@@ -500,4 +463,88 @@
     padding-top: 10px;
     color: red;
     font-weight: bold;
+}
+
+#setCapacity {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#setCapacity label {
+    font-weight: bold;
+}
+
+.capacityForm {
+    border-top: 2px solid rgb(55, 55, 121);
+    padding: 30px;
+}
+
+#maxCapHead {
+    text-align: center;
+    width: 100%;
+}
+
+#maxCapContainer {
+    margin: auto;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+#maxCapContainer form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.formItem {
+    margin: 10px;
+}
+
+#maxCapContainer input[type=text],
+#maxCapContainer select {
+    width: 600px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#maxCapContainer input[type=submit] {
+    width: 600px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#maxCapContainer input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+#closeMaxCap{
+    margin-top: 10px;
+}
+
+#closeMaxCap button {
+    width: 200px;
+    border: none;
+    border-radius: 4px;
+    padding: 14px 20px;
+    margin: 8px 0;
+    font-weight: bold;
+}
+
+#closeMaxCap button:hover {
+    background-color: red;
+    color: white;
 }
