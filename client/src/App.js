@@ -7,6 +7,7 @@ import AdminHero from './components/admin/AdminHero';
 import Status from './components/admin/Status';
 import VerifyDeclinePayment from './components/admin/VerifyDeclinePayment';
 import VerifiedPayments from './components/admin/VerifiedPayments';
+import ElectiveAllocation from './components/admin/ElectiveAllocation';
 import StudentHero from './components/student/StudentHero';
 import RegPage from './components/student/RegPage';
 import Payment from './components/student/Payment';
@@ -27,6 +28,7 @@ function App() {
           <Route exact path='/status' element={<Status setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
           <Route exact path='/verify' element={<VerifyDeclinePayment setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
           <Route exact path='/verified' element={<VerifiedPayments setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
+          <Route exact path='/allocation' element={<ElectiveAllocation setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
           <Route exact path='/studenthero' element={<StudentHero setLogged={setLogged} />}></Route>
           <Route exact path='/regpage' element={<RegPage setLogged={setLogged} />}></Route>
           <Route exact path='/payment' element={<Payment setLogged={setLogged} />}></Route>

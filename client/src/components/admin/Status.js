@@ -13,7 +13,7 @@ function Status(props) {
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Authorization": localStorage.getItem('token')
             },
-            body: `sem=${encodeURIComponent(localStorage.getItem('semester'))}`
+            body: `semester=${encodeURIComponent(localStorage.getItem('semester'))}&branch=${encodeURIComponent(localStorage.getItem('branch'))}`
         });
         if (data.status === 200) {
             data = await data.json();
@@ -29,7 +29,7 @@ function Status(props) {
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Authorization": localStorage.getItem('token')
             },
-            body: `sem=${encodeURIComponent(localStorage.getItem('semester'))}`
+            body: `semester=${encodeURIComponent(localStorage.getItem('semester'))}&branch=${encodeURIComponent(localStorage.getItem('branch'))}`
         });
         if (data.status === 200) {
             data = await data.json();
@@ -65,10 +65,9 @@ function Status(props) {
                         <tr>
                             <th scope="col">S. no.</th>
                             <th scope="col">Roll no.</th>
-                            <th scope="col">Name</th>
+                            <th style={{width: '250px'}} scope="col">Name</th>
                             <th scope="col">CPI</th>
-                            {/* <th scope="col">Selected electives</th> */}
-                            <th scope="col">Allotted electives</th>
+                            <th style={{width: '380px'}} scope="col">Allotted electives</th>
                         </tr>
                     </thead>
                     <tbody className="table-group-divider">
@@ -78,15 +77,14 @@ function Status(props) {
                                 <td>{element.roll_number}</td>
                                 <td>{element.name}</td>
                                 <td>{element.cpi}</td>
-                                {/* <td>{!element.selected_elective ? "NA" : element.selected_elective.map((e)=>{return <>{`${e.code}: ${e.name}`}<br /></>;})}</td> */}
-                                <td>{!element.allotted_elective ? "NA" : element.allotted_elective}</td>
+                                <td>{!element.allotted_elective ? "NA" : element.allotted_elective.map((e, i)=>{return <>{`${e.code}: ${e.name}`}<br /></>;})}</td>
                             </tr>
                         })}
                     </tbody>
                 </table>
             </div>
             <div className="allotBtn">
-                <button type="button" className="btn btn-success my-2">Allocate Electives</button>
+                <button type="button" className="btn btn-success my-2" onClick={()=>{navigate('/allocation')}}>Allocate Electives</button>
                 <button type="button" className="btn btn-success my-2" onClick={()=>{navigate('/verify')}}>Verify Payments</button>
             </div>
         </div>

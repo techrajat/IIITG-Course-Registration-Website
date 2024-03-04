@@ -15,7 +15,7 @@ function RegPage(props) {
         "Content-Type": "application/x-www-form-urlencoded",
         "Authorization": localStorage.getItem('token')
       },
-      body: `sem=${encodeURIComponent(user.semester + 1)}&branch=${encodeURIComponent(user.branch)}`
+      body: `semester=${encodeURIComponent(user.semester + 1)}&branch=${encodeURIComponent(user.branch)}`
     });
     if (data.status === 200) {
       data = await data.json();
