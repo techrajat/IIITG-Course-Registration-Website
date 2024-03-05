@@ -22,9 +22,9 @@ def registered():
         students = collection.find({"semester": int(semester), "branch": branch, "status": 1}, {'_id': 0})
         students = list(students)
         result = [dict(student) for student in students]
+        return {"result": result}, 200
     except:
         return {"error": "Server error"}, 500
-    return {"result": result}, 200
 
 @status_bp.route("/unregistered", methods=['POST'])
 def unregistered():

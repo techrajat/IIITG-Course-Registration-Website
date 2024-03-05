@@ -1,9 +1,11 @@
 import { React, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import '../../App.css';
+import { useNavigate } from 'react-router-dom';
+import { ClipLoader } from 'react-spinners';
 
 function ElectiveAllocation(props) {
     const navigate = useNavigate();
+    const [load, setLoad] = useState(false);
     const [electives, setElectives] = useState([]);
     const [totalStudents, setTotalStudents] = useState([]);
 
@@ -56,7 +58,30 @@ function ElectiveAllocation(props) {
     const allocateElectives = async (event) => {
         event.preventDefault();
         if (validateForm()) {
-            
+            document.getElementById('capSetSpan').innerHTML = "Setting capacity";
+            // document.getElementById('capSetBtn').disabled = true;
+            setLoad(true);
+            let capacity = {};
+            const items = document.getElementsByClassName('formItem');
+            items.forEach((element)=>{
+                let elective = element.querySelector('label').textContent;
+                let maxCap = parseInt(element.querySelector('input').value);
+                capacity[elective] = maxCap;
+            });
+            let data = await fetch("http://127.0.0.1:5000/allocate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Authorization": localStorage.getItem('token')
+                },
+                body: `semester=${encodeURIComponent(localStorage.getItem('semester'))}&branch=${encodeURIComponent(localStorage.getItem('branch'))}&maxCapacity=${encodeURIComponent(JSON.stringify(capacity))}`
+            });
+            if (data.status === 200) {
+                setLoad(false);
+                document.getElementById('capSetSpan').innerHTML = "Set capacity";
+                // document.getElementById('capSetBtn').disabled = false;
+                navigate('/status');
+            }
         }
     };
 
@@ -86,7 +111,7 @@ function ElectiveAllocation(props) {
                             })}
                         </div>
                     })}
-                    <div><input type="submit" value="Set capacity" /></div>
+                    <div><button type="submit" id="capSetBtn"><ClipLoader loading={load} size={20} /> <span id="capSetSpan">Set capacity</span></button></div>
                 </form>
             </div>
             <div id="closeMaxCap"><button onClick={() => { navigate('/status') }}>Close</button></div>
