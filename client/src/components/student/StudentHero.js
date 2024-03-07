@@ -2,6 +2,7 @@ import { React, useState, useEffect } from 'react';
 import '../../App.css';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
+import { ClipLoader } from 'react-spinners';
 
 const customStyles = {
   content: {
@@ -20,6 +21,7 @@ function StudentHero(props) {
   const [message, setMessage] = useState({});
   const [openElectiveModal, setOpenElectiveModal] = useState(false);
   const [allottedElectives, setAllottedElectives] = useState([]);
+  const [load, setLoad] = useState(true);
 
   let subtitle;
   function afterOpenModal() {
@@ -35,6 +37,11 @@ function StudentHero(props) {
       },
     });
     const parsedData = await data.json();
+    if(document.getElementById('student-buttons')) {
+      setLoad(false);
+      document.getElementById('student-buttons').style.display = 'block';
+      document.getElementById('courseRegBtn').style.display = 'block';
+    }
     if (document.getElementById('courseRegBtn') && document.getElementById('allotted') && document.getElementById('payStatus') && document.getElementById('underVerification')) {
       if (data.status === 200) {
         setMessage(parsedData);
@@ -81,6 +88,9 @@ function StudentHero(props) {
     if (data.status === 200) {
       data = await data.json();
       const electives = data.electives;
+      if (electives === null) {
+        document.getElementById('notAllotted').style.display = 'block';
+      }
       setAllottedElectives(electives);
     }
   };
@@ -122,18 +132,22 @@ function StudentHero(props) {
       >
         <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Allotted Electives</h2>
         <button onClick={() => { setOpenElectiveModal(false) }} id="electiveModalClose"><i className="fa-solid fa-xmark"></i></button>
-        {allottedElectives.map((element, index)=>{
+        <div id="notAllotted" style={{ display: 'none' }}><p>Electives not allotted yet.</p></div>
+        {allottedElectives !== null && allottedElectives.map((element, index) => {
           return <div key={index}>
-            <p>{index+1}. {element.code}: {element.name}</p>
+            <p>{index + 1}. {element.code}: {element.name}</p>
           </div>
         })}
       </Modal>
       <div className="studentRegOptions">
         <div><h1 id="UserName">Welcome</h1></div>
-        <div className="options" id="courseRegBtn"><button className="option" onClick={() => { navigate('/regpage') }}>Course Registration</button></div>
-        <div className="options" id="payStatus" style={{ display: "none" }}><button className="option" onClick={() => { navigate('/receipt') }}>View Payment Receipt</button></div>
-        <div className="options" id="allotted" onClick={getAllottedElectives} style={{ display: "none" }}><button className="option">View Allotted Electives</button></div>
-        <div className="options" id="underVerification" style={{ display: "none" }}>Payment status under verification...</div>
+        <div style={{ 'textAlign': 'center' }}><ClipLoader loading={load} size={20} /></div>
+        <div id="student-buttons">
+          <div className="options" id="courseRegBtn"><button className="option" onClick={() => { navigate('/regpage') }}>Course Registration</button></div>
+          <div className="options" id="payStatus" style={{ display: "none" }}><button className="option" onClick={() => { navigate('/receipt') }}>View Payment Receipt</button></div>
+          <div className="options" id="allotted" onClick={getAllottedElectives} style={{ display: "none" }}><button className="option">View Allotted Electives</button></div>
+          <div className="options" id="underVerification" style={{ display: "none" }}>Payment status under verification...</div>
+        </div>
       </div>
     </div>
   );
