@@ -33,7 +33,7 @@ function VerifyDeclinePayment(props) {
                 },
                 body: `roll=${encodeURIComponent(roll)}`
             });
-            if (data.status === 200) {
+            if (data.status === 200 && row) {
                 row.remove();
             }
         }
@@ -61,7 +61,7 @@ function VerifyDeclinePayment(props) {
                 },
                 body: `roll=${encodeURIComponent(roll)}&reason=${encodeURIComponent(reason)}`
             });
-            if (data.status === 200) {
+            if (data.status === 200 && row) {
                 row.remove();
             }
         }

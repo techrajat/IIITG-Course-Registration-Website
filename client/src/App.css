@@ -8,7 +8,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    height: 100vh;
+    height: calc(100vh - 52.41px);
     background-color: #f3f3f3;
     display: flex;
     flex-direction: column;
@@ -29,41 +29,41 @@
 }
 
 .head {
-    position: fixed;
-    width: 100vw;
-    top: 0;
-    z-index: 1;
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
+    width: 100%;
+}
+
+.head .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 70px;
+    font-size: large;
+    padding: 10px;
+}
+
+.head .container-fluid {
+    width: fit-content;
+    margin: 0;
 }
 
 .college-name {
-    font-size: 30px;
+    color: white;
+    text-align: center;
+    font-size: larger;
 }
 
-.head nav {
-    display: flex;
-    align-items: center;
-    font-size: large;
-}
-
-.head nav a {
+.head .navbar a {
     color: #fff;
-    text-decoration: none;
-    margin: 0 15px;
+    margin: 0 10px;
 }
 
 #logged a {
-    width: 129px;
+    width: 140px;
 }
 
-#logged button {
-    font-size: large;
+.navbar-toggler {
+    position: absolute;
+    right: 13px;
+    top: 7px;
 }
 
 #custom-modal, #electiveModal {
@@ -93,7 +93,7 @@
 
 
 .choose {
-    margin: 100px 30px 30px 30px;
+    margin: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -155,7 +155,7 @@
 
 #verification,
 #verifiedReceipts {
-    margin-top: 100px;
+    margin-top: 25px;
 }
 
 .login-page {
@@ -225,13 +225,26 @@
 
 .studentRegOptions {
     text-align: center;
-    height: 100vh;
+    height: calc(100vh - 52.41px);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     background-color: #f3f3f3;
-    ;
+}
+
+#courseRegBtn {
+    display: none;
+}
+
+#student-buttons {
+    display: none;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #f3f3f3;
 }
 
 .options {
@@ -265,7 +278,6 @@
 .reg-form-container {
     max-width: 408px;
     margin: 50px auto;
-    margin-top: 100px;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -298,7 +310,15 @@
     flex-direction: column;
 }
 
+#elective-preference {
+    display: none;
+}
+
 #regForm input[type="submit"] {
+    padding: 8px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+    width: 100%;
     background-color: #4caf50;
     color: #fff;
     cursor: pointer;
@@ -314,8 +334,7 @@
 }
 
 #bill {
-    height: 100vh;
-    width: 100vw;
+    height: calc(100vh - 75px);;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -323,7 +342,6 @@
 
 .bill-container {
     background-color: #fff;
-    margin-top: 68px;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -411,7 +429,7 @@
 }
 
 .upload-form {
-    margin-top: 93px;
+    margin-top: 20px;
     background-color: #ffffff;
     border-radius: 8px;
     padding: 30px;
@@ -466,7 +484,7 @@
 }
 
 #setCapacity {
-    margin-top: 100px;
+    margin-top: 25px;
     display: flex;
     flex-direction: column;
     justify-content: center;

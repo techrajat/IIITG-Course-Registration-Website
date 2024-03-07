@@ -1,11 +1,13 @@
 import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ClipLoader } from 'react-spinners';
 
 function RegPage(props) {
   const navigate = useNavigate();
 
   const [user, setUser] = useState({});
   const [course, setCourse] = useState({});
+  const [load, setLoad] = useState(true);
 
   const getCourse = async () => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -20,6 +22,10 @@ function RegPage(props) {
     if (data.status === 200) {
       data = await data.json();
       setCourse(data.course);
+      setLoad(false);
+      if (document.getElementById('elective-preference')) {
+        document.getElementById('elective-preference').style.display = 'block';
+      }
     }
   };
 
@@ -87,21 +93,23 @@ function RegPage(props) {
             </label>
           </div>
         })}
-        {Object.keys(course).length !== 0 && course.electives.map((element, index) => {
-          return <div className="elective" key={index}>
-            <label htmlFor="course"><span>*</span> Select preference order for elective/project {index + 1}:</label>
-            {element.map((ele, ind) => {
-              return <select id={`select${index}${ind}`} className="selectedElectives" name="course" key={ind} required>
-                <option value="">Select an option</option>
-                {element.map((e, i) => {
-                  return <option key={i} value={`${e.code}::${e.name}`}>{e.code} ({e.name})</option>
-                })}
-              </select>
-            })}
-
-          </div>
-        })}
-        <input type="submit" value="Register and Pay" />
+        <div style={{ 'textAlign': 'center' }}><ClipLoader loading={load} size={20} /></div>
+        <div id="elective-preference">
+          {Object.keys(course).length !== 0 && course.electives.map((element, index) => {
+            return <div className="elective" key={index}>
+              <label htmlFor="course"><span>*</span> Select preference order for elective/project {index + 1}:</label>
+              {element.map((ele, ind) => {
+                return <select id={`select${index}${ind}`} className="selectedElectives" name="course" key={ind} required>
+                  <option value="">Select an option</option>
+                  {element.map((e, i) => {
+                    return <option key={i} value={`${e.code}::${e.name}`}>{e.code} ({e.name})</option>
+                  })}
+                </select>
+              })}
+            </div>
+          })}
+          <div style={{ 'textAlign': 'center' }}><input type="submit" value="Register and Pay" /></div>
+        </div>
         <div id="sameElectiveWarn" style={{ display: 'none' }}><p>You cannot choose the same elective multiple times.</p></div>
       </form>
     </div>
