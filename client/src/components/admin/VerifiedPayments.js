@@ -55,7 +55,7 @@ function VerifiedPayments(props) {
                         </tr>
                     </thead>
                     <tbody className="table-group-divider">
-                        {receipts.map((element, index) => {
+                        {receipts.length !== 0 && receipts.map((element, index) => {
                             return <tr key={element.roll_number}>
                                 <td>{index + 1}</td>
                                 <td>{element.roll_number}</td>

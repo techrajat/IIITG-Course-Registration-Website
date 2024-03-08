@@ -21,6 +21,11 @@ function ElectiveAllocation(props) {
         if (data.status === 200) {
             data = await data.json();
             setElectives(data.course.electives);
+            if(data.course.electives == null) {
+                document.getElementById('maxCapContainer').style.display = 'none';
+                document.getElementById('maxCapHead').style.display = 'none';
+                document.getElementById('no-electives').style.display = 'block';
+            }
         }
     };
 
@@ -100,9 +105,9 @@ function ElectiveAllocation(props) {
             <div id="maxCapHead"><h3>Set maximum capacity of students for each elective</h3></div>
             <div id="maxCapContainer">
                 <form onSubmit={allocateElectives}>
-                    {electives.map((elective_set, index) => {
+                    {electives !== null && electives.map((elective_set, index) => {
                         return <div key={index} className="capElectives">
-                            <label style={{ color: '#4478bd' }}>Elective/Project {index + 1} <span style={{ color: 'red', display: 'none' }}>(Total Max {'>='} 161)</span></label>
+                            <label style={{ color: '#4478bd' }}>Elective/Project {index + 1} <span style={{ color: 'red', display: 'none' }}>(Total Max {'>='} {totalStudents})</span></label>
                             {elective_set.map((choice, i) => {
                                 return <div className="formItem" key={i}>
                                     <label>{choice.code}:{choice.name}</label><br />
@@ -114,6 +119,7 @@ function ElectiveAllocation(props) {
                     <div><button type="submit" id="capSetBtn"><ClipLoader loading={load} size={20} /> <span id="capSetSpan">Set capacity</span></button></div>
                 </form>
             </div>
+            <div id="no-electives">No electives</div>
             <div id="closeMaxCap"><button onClick={() => { navigate('/status') }}>Close</button></div>
         </div>
     );

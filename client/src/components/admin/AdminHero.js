@@ -38,6 +38,7 @@ function AdminHero(props) {
         </select>
         <select id="branch" className="form-select adminHeroSelect" aria-label="Default select example" required>
           <option value="">Select branch</option>
+          <option value="All">All</option>
           <option value="CSE">CSE</option>
           <option value="ECE">ECE</option>
         </select>

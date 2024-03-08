@@ -19,7 +19,10 @@ def registered():
           return {"error": "Authentication failed"}, 400  
         semester = request.form['semester']
         branch = request.form['branch']
-        students = collection.find({"semester": int(semester), "branch": branch, "status": 1}, {'_id': 0})
+        if branch == "All":
+           students = collection.find({"semester": int(semester), "status": 1}, {'_id': 0})
+        else:
+            students = collection.find({"semester": int(semester), "branch": branch, "status": 1}, {'_id': 0})
         students = list(students)
         result = [dict(student) for student in students]
         return {"result": result}, 200
@@ -34,7 +37,10 @@ def unregistered():
           return {"error": "Authentication failed"}, 400
         semester = request.form['semester']
         branch = request.form['branch']
-        students = collection.find({"semester": int(semester), "branch": branch, "status": 0}, {'_id': 0})
+        if branch == "All":
+           students = collection.find({"semester": int(semester), "status": 0}, {'_id': 0})
+        else:
+            students = collection.find({"semester": int(semester), "branch": branch, "status": 0}, {'_id': 0})
         students = list(students)
         result = [dict(student) for student in students]
         return {"result": result}, 200
@@ -49,13 +55,16 @@ def totalstudents():
           return {"error": "Authentication failed"}, 400
         semester = request.form['semester']
         branch = request.form['branch']
-        num_students = collection.count_documents({"semester": int(semester), "branch": branch})
+        if branch == "All":
+            num_students = collection.count_documents({"semester": int(semester)})
+        else:
+            num_students = collection.count_documents({"semester": int(semester), "branch": branch})
         return {"result": num_students}, 200
     except:
         return {"error": "Server error"}, 500
     
 @status_bp.route("/elective/students", methods=['POST'])
-def courses_mandatory_students():
+def coursewise():
     try:
         user = request.environ['user']
         if not user or not user['admin']:
