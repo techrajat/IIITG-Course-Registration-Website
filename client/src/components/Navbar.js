@@ -37,7 +37,7 @@ function Navbar(props) {
   return (
     <div>
       <header className="head">
-        <nav className="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+        <nav className="navbar navbar-expand-lg bg-dark fixed-top" data-bs-theme="dark">
           <div className="college-name">IIITG Course Registration</div>
           <div className="container-fluid">
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,7 +53,7 @@ function Navbar(props) {
                 </li>
                 {props.logged === true && <li className="nav-item dropdown" id="logged">
                   <a className="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  {name ? name : ""}
+                    <i class="fa-solid fa-user"></i> {name ? name : ""}
                   </a>
                   <ul className="dropdown-menu">
                     <li><Link className="dropdown-item" to="/" onClick={logout}>Logout</Link></li>
