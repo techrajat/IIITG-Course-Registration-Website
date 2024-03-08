@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../App.css';
 
 function Status(props) {
@@ -87,6 +87,7 @@ function Status(props) {
                 <button type="button" className="btn btn-success my-2" onClick={()=>{navigate('/allocation')}}>Allocate Electives</button>
                 <button type="button" className="btn btn-success my-2" onClick={()=>{navigate('/verify')}}>Verify Payments</button>
             </div>
+            <div id="course-wise-link"><Link to="/coursewise">Get course-wise registered students</Link></div>
         </div>
     );
 }

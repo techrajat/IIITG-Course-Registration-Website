@@ -53,7 +53,7 @@ function Navbar(props) {
                 </li>
                 {props.logged === true && <li className="nav-item dropdown" id="logged">
                   <a className="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-user"></i> {name ? name : ""}
+                    <i className="fa-solid fa-user"></i> {name ? name : ""}
                   </a>
                   <ul className="dropdown-menu">
                     <li><Link className="dropdown-item" to="/" onClick={logout}>Logout</Link></li>
