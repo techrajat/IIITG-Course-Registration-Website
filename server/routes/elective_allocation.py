@@ -45,7 +45,7 @@ def update_students(allocation_result, students):
 def allocate():
     try:
         user = request.environ['user']
-        if(not user):
+        if not user or not user['admin']:
           return {"error": "Authentication failed"}, 400
         semester = request.form['semester']
         branch = request.form['branch']

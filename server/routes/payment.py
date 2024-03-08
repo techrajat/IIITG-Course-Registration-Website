@@ -48,9 +48,7 @@ def createbill():
 
 
 def hmac_sha256(data, key):
-    return hmac.new(
-        key.encode("utf-8"), data.encode("utf-8"), hashlib.sha256
-    ).hexdigest()
+    return hmac.new(key.encode("utf-8"), data.encode("utf-8"), hashlib.sha256).hexdigest()
 
 
 @pay_bp.route("/payment/<roll>/<electives>", methods=["POST"])

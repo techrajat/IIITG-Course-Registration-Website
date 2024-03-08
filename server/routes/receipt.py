@@ -77,14 +77,12 @@ def deletereceipt():
 def getuploadedreceipts():
     try:
         user = request.environ["user"]
-        if not user:
+        if not user or not user['admin']:
             return {"error": "Authentication failed"}, 400
         semester = request.form["sem"]
         receipts = uploadedReceipts.find({"semester": int(semester)}, {"_id": 0})
         receipts = list(receipts)
-        result = [
-            dict(receipt) for receipt in receipts if receipt["verified"] != 1 and receipt["declined"] != 1
-        ]
+        result = [dict(receipt) for receipt in receipts if receipt["verified"] != 1 and receipt["declined"] != 1]
         return {"result": result}, 200
     except:
         return {"error": "Server error"}, 500
@@ -93,7 +91,7 @@ def getuploadedreceipts():
 def getverifiedpayments():
     try:
         user = request.environ["user"]
-        if not user:
+        if not user or not user['admin']:
             return {"error": "Authentication failed"}, 400
         semester = request.form["sem"]
         receipts = verifiedReceipts.find({"semester": int(semester)}, {"_id": 0})
