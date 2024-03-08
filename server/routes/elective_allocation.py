@@ -14,14 +14,14 @@ regStatus_db = db["RegStatus"]
 courses_db = db["Courses"]
 
 def allocate_electives(students, electives, max_capacity):
-    allocation_result = {f"{elective['code']}: {elective['name']}": [] for elective in electives}
+    allocation_result = {f"{elective['code']}:{elective['name']}": [] for elective in electives}
     sorted_students = sorted(students, key=lambda x: x["cpi"], reverse=True)
 
     for student in sorted_students:
         selected_electives = student["selected_elective"]
         for order_of_choices in selected_electives:
             for choice in order_of_choices:
-                choice_desc = f"{choice['code']}: {choice['name']}"
+                choice_desc = f"{choice['code']}:{choice['name']}"
                 if len(allocation_result[choice_desc]) < max_capacity[choice_desc]:
                     allocation_result[choice_desc].append(student["roll_number"])
                     break
@@ -52,7 +52,7 @@ def allocate():
         max_capacity = request.form['maxCapacity']
         max_capacity = json.loads(max_capacity)
 
-        students_collection = regStatus_db.find({'semester': int(semester)}, {'_id': 0})
+        students_collection = regStatus_db.find({'semester': int(semester), 'status': 1}, {'_id': 0})
         students = []
         for student in students_collection:
             students.append(student)

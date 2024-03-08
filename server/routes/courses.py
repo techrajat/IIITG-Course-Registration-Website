@@ -16,7 +16,7 @@ regStatus = db['RegStatus']
 def registered():
     try:
         user = request.environ['user']
-        if(not user):
+        if not user:
           return {"error": "Authentication failed"}, 400
         semester = request.form['semester']
         branch = request.form['branch']
@@ -29,7 +29,7 @@ def registered():
 def viewallottedelectives():
     try:
         user = request.environ['user']
-        if(not user):
+        if not user:
           return {"error": "Authentication failed"}, 400
         student = regStatus.find_one({"roll_number": user['roll_number']}, {"_id": 0})
         return {"electives": student['allotted_elective']}, 200

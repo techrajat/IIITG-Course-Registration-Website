@@ -105,7 +105,7 @@ function ElectiveAllocation(props) {
                             <label style={{ color: '#4478bd' }}>Elective/Project {index + 1} <span style={{ color: 'red', display: 'none' }}>(Total Max {'>='} 161)</span></label>
                             {elective_set.map((choice, i) => {
                                 return <div className="formItem" key={i}>
-                                    <label>{choice.code}: {choice.name}</label><br />
+                                    <label>{choice.code}:{choice.name}</label><br />
                                     <input type="text" placeholder="Enter max capacity" className="capValue" required />
                                 </div>
                             })}
