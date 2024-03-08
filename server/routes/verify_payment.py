@@ -22,14 +22,12 @@ verifiedReceipts = db["VerifiedReceipts"]
 def verifypayment():
     try:
         user = request.environ["user"]
-        if not user:
+        if not user or not user['admin']:
             return {"error": "Authentication failed"}, 400
         roll = request.form["roll"]
         try:
             regStatus.update_one({"roll_number": roll}, {"$set": {"status": 1}})
-            uploadedReceipts.update_one(
-                {"roll_number": roll}, {"$set": {"verified": 1}}
-            )
+            uploadedReceipts.update_one({"roll_number": roll}, {"$set": {"verified": 1}})
             receipt = uploadedReceipts.find_one({"roll_number": roll})
             student = students.find_one({"roll_number": roll})
             verifiedReceipts.insert_one(
@@ -54,7 +52,7 @@ def verifypayment():
 def declinepayment():
     try:
         user = request.environ["user"]
-        if not user:
+        if not user or not user['admin']:
             return {"error": "Authentication failed"}, 400
         roll = request.form["roll"]
         reason = request.form["reason"]
