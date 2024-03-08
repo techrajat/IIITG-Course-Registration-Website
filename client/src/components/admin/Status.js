@@ -71,13 +71,13 @@ function Status(props) {
                         </tr>
                     </thead>
                     <tbody className="table-group-divider">
-                        {students.map((element, index) => {
+                        {students.length !== 0 && students.map((element, index) => {
                             return <tr key={element.roll_number}>
                                 <td>{index + 1}</td>
                                 <td>{element.roll_number}</td>
                                 <td>{element.name}</td>
                                 <td>{element.cpi}</td>
-                                <td>{!element.allotted_elective ? "NA" : element.allotted_elective.map((e, i)=>{return <>{`${e.code}: ${e.name}`}<br /></>;})}</td>
+                                <td>{(element.allotted_elective == null) ? "NA" : element.allotted_elective.map((e, i)=>{return <>{`${e.code}: ${e.name}`}<br /></>;})}</td>
                             </tr>
                         })}
                     </tbody>

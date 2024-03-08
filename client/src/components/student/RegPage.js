@@ -11,7 +11,7 @@ function RegPage(props) {
 
   const getCourse = async () => {
     const user = JSON.parse(localStorage.getItem('user'));
-    let data = await fetch("http://127.0.0.1:5000/getcourse", {
+    let data1 = await fetch("http://127.0.0.1:5000/getcourse", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -19,9 +19,25 @@ function RegPage(props) {
       },
       body: `semester=${encodeURIComponent(user.semester + 1)}&branch=${encodeURIComponent(user.branch)}`
     });
-    if (data.status === 200) {
-      data = await data.json();
-      setCourse(data.course);
+    let data2 = await fetch("http://127.0.0.1:5000/getcourse", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": localStorage.getItem('token')
+      },
+      body: `semester=${encodeURIComponent(user.semester + 1)}&branch=${encodeURIComponent("All")}`
+    });
+    if (data1.status === 200 && data2.status === 200) {
+      data1 = await data1.json();
+      data2 = await data2.json();
+      let data = data1.course;
+      if (data2.course.courses !== null) {
+        data.courses = data.courses.concat(data2.course.courses);
+      }
+      if (data2.course.electives !== null) {
+        data.electives = data.electives.concat(data2.course.electives);
+      }
+      setCourse(data);
       setLoad(false);
       if (document.getElementById('elective-preference')) {
         document.getElementById('elective-preference').style.display = 'block';
@@ -85,7 +101,7 @@ function RegPage(props) {
         <label htmlFor="sem"><span>*</span> Registering for semester:</label>
         <input type="text" id="sem" name="sem" value={!isNaN(user.semester) ? user.semester + 1 : ''} disabled />
         <label htmlFor="course"><span>*</span> Mandatory Courses:</label>
-        {Object.keys(course).length !== 0 && course.courses.map((element, index) => {
+        {Object.keys(course).length !== 0 && course.courses !== null && course.courses.map((element, index) => {
           return <div className="form-check" key={index}>
             <input className="form-check-input" type="checkbox" value={element.code} checked onChange={() => { }} />
             <label className="form-check-label">
@@ -95,7 +111,7 @@ function RegPage(props) {
         })}
         <div style={{ 'textAlign': 'center' }}><ClipLoader loading={load} size={20} /></div>
         <div id="elective-preference">
-          {Object.keys(course).length !== 0 && course.electives.map((element, index) => {
+          {Object.keys(course).length !== 0 && course.electives !== null && course.electives.map((element, index) => {
             return <div className="elective" key={index}>
               <label htmlFor="course"><span>*</span> Select preference order for elective/project {index + 1}:</label>
               {element.map((ele, ind) => {

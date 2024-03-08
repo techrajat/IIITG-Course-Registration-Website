@@ -18,14 +18,15 @@ def allocate_electives(students, electives, max_capacity):
     sorted_students = sorted(students, key=lambda x: x["cpi"], reverse=True)
 
     for student in sorted_students:
-        selected_electives = student["selected_elective"]
-        for order_of_choices in selected_electives:
+        for order_of_choices in student["selected_elective"]:
             for choice in order_of_choices:
                 choice_desc = f"{choice['code']}:{choice['name']}"
-                if len(allocation_result[choice_desc]) < max_capacity[choice_desc]:
+                if (
+                    allocation_result.get(choice_desc) is not None 
+                    and len(allocation_result[choice_desc]) < max_capacity[choice_desc]
+                   ):
                     allocation_result[choice_desc].append(student["roll_number"])
                     break
-
     return allocation_result
 
 def update_students(allocation_result, students):
@@ -39,7 +40,12 @@ def update_students(allocation_result, students):
             allotted_electives[roll].append({'code': split_string[0], 'name': split_string[1]})
 
     for roll, selected_electives in allotted_electives.items():
-        regStatus_db.update_one({'roll_number': roll}, {'$set': {'allotted_elective': selected_electives}})
+        existing_allotted_electives = regStatus_db.find_one({'roll_number': roll})['allotted_elective']
+        if existing_allotted_electives is None or len(existing_allotted_electives) == 0:
+            regStatus_db.update_one({'roll_number': roll}, {'$set': {'allotted_elective': selected_electives}})
+        else:
+            updated_allotted_electives = existing_allotted_electives + selected_electives
+            regStatus_db.update_one({'roll_number': roll}, {'$set': {'allotted_elective': updated_allotted_electives}})
 
 @allocation_bp.route("/allocate", methods=['POST'])
 def allocate():
@@ -52,7 +58,10 @@ def allocate():
         max_capacity = request.form['maxCapacity']
         max_capacity = json.loads(max_capacity)
 
-        students_collection = regStatus_db.find({'semester': int(semester), 'status': 1}, {'_id': 0})
+        if branch == "All":
+            students_collection = regStatus_db.find({'semester': int(semester), 'status': 1}, {'_id': 0})
+        else:
+            students_collection = regStatus_db.find({'semester': int(semester), "branch": branch, 'status': 1}, {'_id': 0})
         students = []
         for student in students_collection:
             students.append(student)

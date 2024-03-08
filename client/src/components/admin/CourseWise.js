@@ -5,6 +5,7 @@ import '../../App.css';
 function CourseWise(props) {
     const navigate = useNavigate();
     const [course, setCourse] = useState({});
+    const [mandatoryCourseStudents, setMandatoryCourseStudents] = useState({});
     const [students, setStudents] = useState({});
 
     const getCourse = async () => {
@@ -34,12 +35,13 @@ function CourseWise(props) {
         if (data.status === 200) {
             data = await data.json();
             data = data.result;
-            setStudents(data);
+            setMandatoryCourseStudents(data);
         }
     };
 
     const getStudentsInElective = async (elective) => {
         if(elective === "mandatory") {
+            setStudents(mandatoryCourseStudents);
             return;
         }
         let data = await fetch("http://127.0.0.1:5000/elective/students", {
@@ -71,12 +73,13 @@ function CourseWise(props) {
         <div id="course-wise">
             <div id="select-course">
                 <select className="form-select w-50" onChange={(event) => getStudentsInElective(event.target.value)}>
-                    {Object.keys(course).length !== 0 && course.courses.map((element, index) => {
+                <option className="mandatory-courses" value="">Select course</option>
+                    {Object.keys(course).length !== 0 && course.courses !== null && course.courses.map((element, index) => {
                         return <option className="mandatory-courses" key={index} value="mandatory">{element.code} ({element.name})</option>
                     })}
-                    {Object.keys(course).length !== 0 && course.electives.map((element, index) => {
+                    {Object.keys(course).length !== 0 && course.electives !== null && course.electives.map((element, index) => {
                         return element.map((ele, ind) => {
-                            return <option onClick={()=>{getStudentsInElective(`${ele.code}:${ele.name}`)}} className="elective-courses" key={ind} value={`${ele.code}:${ele.name}`}>{ele.code} ({ele.name})</option>
+                            return <option className="elective-courses" key={ind} value={`${ele.code}:${ele.name}`}>{ele.code} ({ele.name})</option>
                         })
                     })}
                 </select>
@@ -103,7 +106,7 @@ function CourseWise(props) {
                     </tbody>
                 </table>
             </div>
-            <div id="courseWiseBackBtn"><button onClick={() => { navigate('/status') }}>Go back</button></div>
+            <div id="courseWiseBackBtn"><button onClick={() => { navigate('/status') }}>Go Back</button></div>
         </div>
     );
 }

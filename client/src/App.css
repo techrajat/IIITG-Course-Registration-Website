@@ -544,6 +544,12 @@
     padding: 20px;
 }
 
+#no-electives {
+    display: none;
+    font-size: larger;
+    font-weight: bold;
+}
+
 #maxCapContainer form {
     display: flex;
     flex-direction: column;
