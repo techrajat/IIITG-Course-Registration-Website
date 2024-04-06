@@ -307,7 +307,7 @@
     background-color: #2980b9;
 }
 
-.reg-form-container {
+.reg-form-container, .electives-container {
     max-width: 408px;
     margin: 85px auto;
     background-color: #fff;
@@ -316,21 +316,21 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#regForm {
+#regForm, #electivesForm {
     display: flex;
     flex-direction: column;
 }
 
-#regForm span {
+#regForm span, #electivesForm span {
     color: red;
 }
 
-#regForm label {
+#regForm label, #electivesForm label {
     margin-bottom: 8px;
 }
 
 #regForm input,
-#regForm select {
+#regForm select, #electivesForm input, #electivesForm select {
     padding: 8px;
     margin-bottom: 16px;
     border: 1px solid #ccc;
@@ -346,7 +346,7 @@
     display: none;
 }
 
-#regForm input[type="submit"] {
+#regForm input[type="submit"], #electivesForm input[type="submit"] {
     padding: 8px;
     margin-bottom: 16px;
     border-radius: 4px;
@@ -356,13 +356,17 @@
     cursor: pointer;
 }
 
-#regForm input[type="submit"]:hover {
+#regForm input[type="submit"]:hover, #electivesForm input[type="submit"]:hover {
     background-color: #45a049;
 }
 
 #sameElectiveWarn p {
     font-weight: bold;
     color: red;
+}
+
+#selected-electives {
+    display: none;
 }
 
 #bill {
