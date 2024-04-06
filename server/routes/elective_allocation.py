@@ -59,9 +59,23 @@ def allocate():
         max_capacity = json.loads(max_capacity)
 
         if branch == "All":
-            students_collection = regStatus_db.find({'semester': int(semester), 'status': 1}, {'_id': 0})
+            students_collection = regStatus_db.find(
+                {
+                 'semester': int(semester),
+                 'status': 1,
+                 'selected_elective': {'$ne': None}
+                },
+                {'_id': 0}
+            )
         else:
-            students_collection = regStatus_db.find({'semester': int(semester), "branch": branch, 'status': 1}, {'_id': 0})
+            students_collection = regStatus_db.find(
+                {'semester': int(semester),
+                 'status': 1,
+                 'branch': branch,
+                 'selected_elective': {'$ne': None}
+                },
+                {'_id': 0}
+            )
         students = []
         for student in students_collection:
             students.append(student)
