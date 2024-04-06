@@ -25,6 +25,17 @@ def registered():
     except:
         return {"error": "Server error"}, 500
 
+@courses_bp.route("/viewselectedelectives")
+def viewselectedelectives():
+    try:
+        user = request.environ['user']
+        if not user:
+          return {"error": "Authentication failed"}, 400
+        student = regStatus.find_one({"roll_number": user['roll_number']}, {"_id": 0})
+        return {"electives": student['selected_elective']}, 200
+    except:
+        return {"error": "Server error"}, 500
+    
 @courses_bp.route("/viewallottedelectives")
 def viewallottedelectives():
     try:

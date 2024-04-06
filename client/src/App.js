@@ -10,6 +10,7 @@ import VerifiedPayments from './components/admin/VerifiedPayments';
 import ElectiveAllocation from './components/admin/ElectiveAllocation';
 import CourseWise from './components/admin/CourseWise';
 import StudentHero from './components/student/StudentHero';
+import Electives from './components/student/Electives';
 import RegPage from './components/student/RegPage';
 import Payment from './components/student/Payment';
 import Receipt from './components/student/Receipt';
@@ -32,6 +33,7 @@ function App() {
           <Route exact path='/allocation' element={<ElectiveAllocation setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
           <Route exact path='/coursewise' element={<CourseWise setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
           <Route exact path='/studenthero' element={<StudentHero setLogged={setLogged} />}></Route>
+          <Route exact path='/electives' element={<Electives setLogged={setLogged} />}></Route>
           <Route exact path='/regpage' element={<RegPage setLogged={setLogged} />}></Route>
           <Route exact path='/payment' element={<Payment setLogged={setLogged} />}></Route>
           <Route exact path='/receipt' element={<Receipt setLogged={setLogged} />}></Route>

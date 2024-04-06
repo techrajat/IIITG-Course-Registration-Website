@@ -45,12 +45,12 @@ function Navbar(props) {
             </button>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item">
+                {props.logged === true && <li className="nav-item">
                   <Link className="nav-link active" aria-current="page" to={homeLink}><i className="fa-solid fa-house"></i> Home</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/"><i className="fa-solid fa-phone"></i> Contact</Link>
-                </li>
+                </li>}
+                {props.logged === true && props.adminSession === false && <li className="nav-item">
+                  <Link className="nav-link" to="/electives"><i class="fa-solid fa-book"></i> Select Electives</Link>
+                </li>}
                 {props.logged === true && <li className="nav-item dropdown" id="logged">
                   <a className="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i className="fa-solid fa-user"></i> {name ? name : ""}

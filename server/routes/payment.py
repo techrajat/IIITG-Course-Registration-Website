@@ -51,8 +51,8 @@ def hmac_sha256(data, key):
     return hmac.new(key.encode("utf-8"), data.encode("utf-8"), hashlib.sha256).hexdigest()
 
 
-@pay_bp.route("/payment/<roll>/<electives>", methods=["POST"])
-def payment(roll, electives):
+@pay_bp.route("/payment/<roll>", methods=["POST"])
+def payment(roll):
     try:
         details = request.form
         generated_signature = hmac_sha256(
@@ -62,8 +62,7 @@ def payment(roll, electives):
         if generated_signature == details["razorpay_signature"]:
             try:
                 regStatus.update_one(
-                    {"roll_number": roll},
-                    {"$set": {"status": 1, "selected_elective": json.loads(electives)}}
+                    {"roll_number": roll}, {"$set": {"status": 1}}
                 )
             except:
                 return {"error": "Student not found"}, 500
@@ -83,7 +82,7 @@ def payment(roll, electives):
                     "razorpay_order_id": details["razorpay_order_id"],
                     "razorpay_signature": details["razorpay_signature"],
                     "date": today,
-                    "time": formatted_time_ist,
+                    "time": formatted_time_ist
                 }
             )
             return render_template(
@@ -96,7 +95,7 @@ def payment(roll, electives):
                 razorpay_signature=details["razorpay_signature"],
                 date=today,
                 time=formatted_time_ist,
-                amount=Total_Fee,
+                amount=Total_Fee
             )
         else:
             return {"error": "Wrong signature"}, 400
@@ -104,9 +103,10 @@ def payment(roll, electives):
         return {"error": "Server error"}, 500
 
 
-@pay_bp.route("/selectelectives/<electives>")
-def selectelectives(electives):
+@pay_bp.route("/selectelectives", methods=["POST"])
+def selectelectives():
     user = request.environ["user"]
+    electives = request.form["selectedElectives"]
     try:
         regStatus.update_one(
             {"roll_number": user["roll_number"]},
