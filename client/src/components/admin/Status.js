@@ -1,10 +1,13 @@
 import { React, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../../App.css';
+import { ClipLoader } from 'react-spinners';
 
 function Status(props) {
     const navigate = useNavigate();
     const [students, setStudents] = useState([]);
+    const [load, setLoad] = useState(false);
+    const [allocationStatusKey, setAllocationStatusKey] = useState(0);
 
     const getRegisteredStudents = async () => {
         let data = await fetch("http://127.0.0.1:5000/registered", {
@@ -38,6 +41,26 @@ function Status(props) {
         }
     };
 
+    const allocateElectives = async () => {
+        if (window.confirm("Do you want to allocate electives ?")) {
+            setLoad(true);
+            document.getElementById('allocationBtn').innerHTML = "Allocating electives";
+            let data = await fetch("http://127.0.0.1:5000/allocate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Authorization": localStorage.getItem('token')
+                },
+                body: `semester=${encodeURIComponent(localStorage.getItem('semester'))}&branch=${encodeURIComponent(localStorage.getItem('branch'))}`
+            });
+            if (data.status === 200) {
+                setLoad(false);
+                document.getElementById('allocationBtn').innerHTML = "Allocate Electives";
+                setAllocationStatusKey(allocationStatusKey+1);
+            }
+        }
+    }
+
     useEffect(() => {
         if (localStorage.getItem('token')) {
             props.setLogged(true);
@@ -45,7 +68,7 @@ function Status(props) {
         }
         getRegisteredStudents();
         //eslint-disable-next-line
-    }, []);
+    }, [allocationStatusKey]);
 
     return (
         <div className="status">
@@ -65,9 +88,9 @@ function Status(props) {
                         <tr>
                             <th scope="col">S. no.</th>
                             <th scope="col">Roll no.</th>
-                            <th style={{width: '250px'}} scope="col">Name</th>
+                            <th style={{ width: '250px' }} scope="col">Name</th>
                             <th scope="col">CPI</th>
-                            <th style={{width: '380px'}} scope="col">Allotted electives</th>
+                            <th style={{ width: '380px' }} scope="col">Allotted electives</th>
                         </tr>
                     </thead>
                     <tbody className="table-group-divider">
@@ -77,15 +100,16 @@ function Status(props) {
                                 <td>{element.roll_number}</td>
                                 <td>{element.name}</td>
                                 <td>{element.cpi}</td>
-                                <td>{(element.allotted_elective == null) ? "NA" : element.allotted_elective.map((e, i)=>{return <>{`${e.code}: ${e.name}`}<br /></>;})}</td>
+                                <td>{(element.allotted_elective == null) ? "NA" : element.allotted_elective.map((e, i) => { return <>{`${e.code}: ${e.name}`}<br /></>; })}</td>
                             </tr>
                         })}
                     </tbody>
                 </table>
             </div>
             <div className="allotBtn">
-                <button type="button" className="btn btn-success my-2" onClick={()=>{navigate('/allocation')}}>Allocate Electives</button>
-                <button type="button" className="btn btn-success my-2" onClick={()=>{navigate('/verify')}}>Verify Payments</button>
+                <div className="text-center"><ClipLoader loading={load} size={20} /> </div>
+                <button id="allocationBtn" type="button" className="btn btn-success my-2" onClick={allocateElectives}>Allocate Electives</button>
+                <button type="button" className="btn btn-success my-2" onClick={() => { navigate('/verify') }}>Verify Payments</button>
             </div>
             <div id="course-wise-link"><Link to="/coursewise">Get course-wise registered students</Link></div>
         </div>

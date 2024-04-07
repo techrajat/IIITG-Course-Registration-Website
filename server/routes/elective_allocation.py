@@ -47,6 +47,20 @@ def update_students(allocation_result, students):
             updated_allotted_electives = existing_allotted_electives + selected_electives
             regStatus_db.update_one({'roll_number': roll}, {'$set': {'allotted_elective': updated_allotted_electives}})
 
+def update_elective_capacity(allocation_result, semester, branch):
+    courses_collection = courses_db.find_one({"semester": int(semester) + 1, "branch": branch})
+    electives_collection = courses_collection['electives']
+    for elective_db in electives_collection:
+        for choice in elective_db:
+            allocated_size = len(allocation_result[f"{choice['code']}:{choice['name']}"])
+            choice['remaining_capacity'] -= allocated_size
+
+    courses_db.update_one(
+        {"semester": int(semester) + 1, "branch": branch}, 
+        {"$set": {"electives": electives_collection}}
+    )
+
+
 @allocation_bp.route("/allocate", methods=['POST'])
 def allocate():
     try:
@@ -55,8 +69,6 @@ def allocate():
           return {"error": "Authentication failed"}, 400
         semester = request.form['semester']
         branch = request.form['branch']
-        max_capacity = request.form['maxCapacity']
-        max_capacity = json.loads(max_capacity)
 
         if branch == "All":
             students_collection = regStatus_db.find(
@@ -80,16 +92,20 @@ def allocate():
         for student in students_collection:
             students.append(student)
         
-        courses_collection = courses_db.find_one({"branch": branch})
+        courses_collection = courses_db.find_one({"semester": int(semester) + 1, "branch": branch})
         electives_db = courses_collection['electives']
         electives = []
+        max_capacity = {}
         for elective in electives_db:
             for choice in elective:
                 electives.append(choice)
+                max_capacity[f"{choice['code']}:{choice['name']}"] = choice['remaining_capacity']
 
         allocation_result = allocate_electives(students, electives, max_capacity)
         
         update_students(allocation_result, students)
+
+        update_elective_capacity(allocation_result, semester, branch)
 
         return {"sucess": "Electives allocated successfully"}, 200
     except:
