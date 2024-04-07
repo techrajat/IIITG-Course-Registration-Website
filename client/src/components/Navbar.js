@@ -49,7 +49,7 @@ function Navbar(props) {
                   <Link className="nav-link active" aria-current="page" to={homeLink}><i className="fa-solid fa-house"></i> Home</Link>
                 </li>}
                 {props.logged === true && props.adminSession === false && <li className="nav-item">
-                  <Link className="nav-link" to="/electives"><i class="fa-solid fa-book"></i> Select Electives</Link>
+                  <Link className="nav-link" to="/electives"><i className="fa-solid fa-book"></i> Select Electives</Link>
                 </li>}
                 {props.logged === true && <li className="nav-item dropdown" id="logged">
                   <a className="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">

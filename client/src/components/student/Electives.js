@@ -21,8 +21,10 @@ function Electives(props) {
       const selectedElectives = data.electives;
       if (selectedElectives !== null) {
         setSelectedElectives(selectedElectives);
-        document.getElementById('selected-electives').style.display = 'block';
-        document.getElementById('electivesForm').style.display = 'none';
+        if(document.getElementById('selected-electives'))
+          document.getElementById('selected-electives').style.display = 'block';
+        if(document.getElementById('electivesForm'))
+          document.getElementById('electivesForm').style.display = 'none';
       }
       else {
         getCourse();

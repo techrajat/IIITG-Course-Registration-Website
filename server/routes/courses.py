@@ -46,3 +46,29 @@ def viewallottedelectives():
         return {"electives": student['allotted_elective']}, 200
     except:
         return {"error": "Server error"}, 500
+    
+@courses_bp.route("/selectelectives", methods=["POST"])
+def selectelectives():
+    user = request.environ["user"]
+    electives = request.form["selectedElectives"]
+    try:
+        regStatus.update_one(
+            {"roll_number": user["roll_number"]},
+            {"$set": {"selected_elective": json.loads(electives)}}
+        )
+    except:
+        return {"error": "Student not found"}, 500
+    return {"success": "Electives selected successfully"}, 200
+    
+@courses_bp.route("/selectalternateelectives", methods=["POST"])
+def selectalternateelectives():
+    user = request.environ["user"]
+    electives = request.form["alternateElectives"]
+    try:
+        regStatus.update_one(
+            {"roll_number": user["roll_number"]},
+            {"$set": {"change_elective": json.loads(electives)}}
+        )
+    except:
+        return {"error": "Student not found"}, 500
+    return {"success": "Electives selected successfully"}, 200
