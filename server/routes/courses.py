@@ -72,3 +72,11 @@ def selectalternateelectives():
     except:
         return {"error": "Student not found"}, 500
     return {"success": "Electives selected successfully"}, 200
+    
+@courses_bp.route("/checkalternateelectives")
+def checkalternateelectives():
+    user = request.environ["user"]
+    student = regStatus.find_one({"roll_number": user["roll_number"]})
+    if(student and student['change_elective']):
+        return {"result": "Elective change request already made"}, 400
+    return {"result": "Elective change request not made yet"}, 200

@@ -93,6 +93,24 @@ function StudentHero(props) {
     setElectiveLoad(false);
   };
 
+  const changeElectives = async () => {
+    let data = await fetch("http://127.0.0.1:5000/checkalternateelectives", {
+      method: "GET",
+      headers: {
+        "Authorization": localStorage.getItem('token')
+      }
+    });
+    if (data.status === 200) {
+      navigate('/changeelectives');
+    }
+    else {
+      data = await data.json();
+      data = data.result;
+      if(document.getElementById('altElectSelected'))
+        document.getElementById('altElectSelected').innerHTML = data;
+    }
+  }
+
   useEffect(() => {
     if (localStorage.getItem('token')) {
       props.setLogged(true);
@@ -139,7 +157,8 @@ function StudentHero(props) {
               <p>{index + 1}. {element.code}: {element.name}</p>
             </div>
           })}
-          <button type="button" className="btn btn-primary" onClick={() => { navigate('/changeelectives') }}>Change electives</button>
+          <button type="button" className="btn btn-primary" onClick={changeElectives}>Change electives</button>
+          <div><p id="altElectSelected"></p></div>
         </div>}
       </Modal>
       <div className="studentRegOptions">

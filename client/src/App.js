@@ -7,7 +7,6 @@ import AdminHero from './components/admin/AdminHero';
 import Status from './components/admin/Status';
 import VerifyDeclinePayment from './components/admin/VerifyDeclinePayment';
 import VerifiedPayments from './components/admin/VerifiedPayments';
-import ElectiveAllocation from './components/admin/ElectiveAllocation';
 import CourseWise from './components/admin/CourseWise';
 import StudentHero from './components/student/StudentHero';
 import Electives from './components/student/Electives';
@@ -31,7 +30,6 @@ function App() {
           <Route exact path='/status' element={<Status setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
           <Route exact path='/verify' element={<VerifyDeclinePayment setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
           <Route exact path='/verified' element={<VerifiedPayments setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
-          <Route exact path='/allocation' element={<ElectiveAllocation setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
           <Route exact path='/coursewise' element={<CourseWise setLogged={setLogged} setAdminSession={setAdminSession} />}></Route>
           <Route exact path='/studenthero' element={<StudentHero setLogged={setLogged} />}></Route>
           <Route exact path='/electives' element={<Electives setLogged={setLogged} />}></Route>

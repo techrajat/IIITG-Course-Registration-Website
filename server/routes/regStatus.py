@@ -47,22 +47,6 @@ def unregistered():
     except:
         return {"error": "Server error"}, 500
     
-@status_bp.route("/totalstudents", methods=['POST'])
-def totalstudents():
-    try:
-        user = request.environ['user']
-        if not user or not user['admin']:
-          return {"error": "Authentication failed"}, 400
-        semester = request.form['semester']
-        branch = request.form['branch']
-        if branch == "All":
-            num_students = collection.count_documents({"semester": int(semester)})
-        else:
-            num_students = collection.count_documents({"semester": int(semester), "branch": branch})
-        return {"result": num_students}, 200
-    except:
-        return {"error": "Server error"}, 500
-    
 @status_bp.route("/elective/students", methods=['POST'])
 def coursewise():
     try:
