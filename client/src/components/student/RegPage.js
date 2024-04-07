@@ -1,11 +1,13 @@
 import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ClipLoader } from 'react-spinners';
 
 function RegPage(props) {
     const navigate = useNavigate();
 
     const [user, setUser] = useState({});
     const [course, setCourse] = useState({});
+    const [load, setLoad] = useState(true);
 
     const getCourse = async () => {
         const user = JSON.parse(localStorage.getItem('user'));
@@ -36,6 +38,7 @@ function RegPage(props) {
                 data.electives = data.electives.concat(data2.course.electives);
             }
             setCourse(data);
+            setLoad(false);
             document.getElementById('submitRegForm').style.display = 'block';
         }
     };
@@ -61,6 +64,7 @@ function RegPage(props) {
                 <label htmlFor="sem"><span>*</span> Registering for semester:</label>
                 <input type="text" id="sem" name="sem" value={!isNaN(user.semester) ? user.semester + 1 : ''} disabled />
                 <label htmlFor="course"><span>*</span> Mandatory Courses:</label>
+                <div style={{ 'textAlign': 'center' }}><ClipLoader loading={load} size={20} /></div>
                 {Object.keys(course).length !== 0 && course.courses !== null && course.courses.map((element, index) => {
                     return <div className="form-check" key={index}>
                         <input className="form-check-input" type="checkbox" value={element.code} checked onChange={() => {}} />

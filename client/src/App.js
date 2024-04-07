@@ -15,6 +15,7 @@ import RegPage from './components/student/RegPage';
 import Payment from './components/student/Payment';
 import Receipt from './components/student/Receipt';
 import UploadReceipt from './components/student/UploadReceipt';
+import ChangeElectives from './components/student/ChangeElectives';
 
 function App() {
   const [adminSession, setAdminSession] = useState(false);
@@ -38,6 +39,7 @@ function App() {
           <Route exact path='/payment' element={<Payment setLogged={setLogged} />}></Route>
           <Route exact path='/receipt' element={<Receipt setLogged={setLogged} />}></Route>
           <Route exact path='/uploadreceipt' element={<UploadReceipt setLogged={setLogged} />}></Route>
+          <Route exact path='/changeelectives' element={<ChangeElectives setLogged={setLogged} />}></Route>
         </Routes>
       </Router>
     </div>

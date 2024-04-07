@@ -22,6 +22,7 @@ function StudentHero(props) {
   const [openElectiveModal, setOpenElectiveModal] = useState(false);
   const [allottedElectives, setAllottedElectives] = useState([]);
   const [load, setLoad] = useState(true);
+  const [electivesLoad, setElectiveLoad] = useState(true);
 
   let subtitle;
   function afterOpenModal() {
@@ -37,7 +38,7 @@ function StudentHero(props) {
       },
     });
     const parsedData = await data.json();
-    if(document.getElementById('student-buttons')) {
+    if (document.getElementById('student-buttons')) {
       setLoad(false);
       document.getElementById('student-buttons').style.display = 'block';
       document.getElementById('courseRegBtn').style.display = 'block';
@@ -78,21 +79,18 @@ function StudentHero(props) {
   };
 
   const getAllottedElectives = async () => {
-    setOpenElectiveModal(true);
     let data = await fetch("http://127.0.0.1:5000/viewallottedelectives", {
       method: "GET",
       headers: {
         "Authorization": localStorage.getItem('token')
-      },
+      }
     });
     if (data.status === 200) {
       data = await data.json();
       const electives = data.electives;
-      if (electives === null) {
-        document.getElementById('notAllotted').style.display = 'block';
-      }
       setAllottedElectives(electives);
     }
+    setElectiveLoad(false);
   };
 
   useEffect(() => {
@@ -104,6 +102,7 @@ function StudentHero(props) {
     const name = user.name;
     document.getElementById('UserName').innerHTML = `Welcome ${name}`;
     getPayStatus();
+    getAllottedElectives();
     //eslint-disable-next-line
   }, []);
 
@@ -132,12 +131,16 @@ function StudentHero(props) {
       >
         <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Allotted Electives</h2>
         <button onClick={() => { setOpenElectiveModal(false) }} id="electiveModalClose"><i className="fa-solid fa-xmark"></i></button>
-        <div id="notAllotted" style={{ display: 'none' }}><p>Electives not allotted yet.</p></div>
-        {allottedElectives !== null && allottedElectives.map((element, index) => {
-          return <div key={index}>
-            <p>{index + 1}. {element.code}: {element.name}</p>
-          </div>
-        })}
+        <div style={{ 'textAlign': 'center' }}><ClipLoader loading={electivesLoad} size={20} /></div>
+        {allottedElectives === null && <div id="notAllotted"><p>Electives not allotted yet.</p></div>}
+        {allottedElectives !== null && <div>
+          {allottedElectives.map((element, index) => {
+            return <div key={index}>
+              <p>{index + 1}. {element.code}: {element.name}</p>
+            </div>
+          })}
+          <button type="button" className="btn btn-primary" onClick={() => { navigate('/changeelectives') }}>Change electives</button>
+        </div>}
       </Modal>
       <div className="studentRegOptions">
         <div><h1 id="UserName">Welcome</h1></div>
@@ -145,7 +148,7 @@ function StudentHero(props) {
         <div id="student-buttons">
           <div className="options" id="courseRegBtn"><button className="option" onClick={() => { navigate('/regpage') }}>Course Registration</button></div>
           <div className="options" id="payStatus" style={{ display: "none" }}><button className="option" onClick={() => { navigate('/receipt') }}>View Payment Receipt</button></div>
-          <div className="options" id="allotted" onClick={getAllottedElectives} style={{ display: "none" }}><button className="option">View Allotted Electives</button></div>
+          <div className="options" id="allotted" style={{ display: "none" }}><button className="option" onClick={()=>{setOpenElectiveModal(true)}}>View Allotted Electives</button></div>
           <div className="options" id="underVerification" style={{ display: "none" }}>Payment status under verification...</div>
         </div>
       </div>

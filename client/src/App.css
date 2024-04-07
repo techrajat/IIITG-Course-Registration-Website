@@ -66,7 +66,7 @@
     top: 7px;
 }
 
-@media (width < 450px)  {
+@media (width < 450px) {
     .head .container-fluid {
         width: 100vw;
         text-align: center;
@@ -77,11 +77,13 @@
     }
 }
 
-#custom-modal, #electiveModal {
+#custom-modal,
+#electiveModal {
     width: 650px;
 }
 
-#modalClose, #electiveModalClose {
+#modalClose,
+#electiveModalClose {
     position: absolute;
     top: 0;
     right: 0;
@@ -89,11 +91,13 @@
     border: none;
 }
 
-#modalClose:hover, #electiveModalClose:hover {
+#modalClose:hover,
+#electiveModalClose:hover {
     background-color: #DC3545;
 }
 
-#modalClose i, #electiveModalClose i {
+#modalClose i,
+#electiveModalClose i {
     font-size: larger;
 }
 
@@ -307,7 +311,9 @@
     background-color: #2980b9;
 }
 
-.reg-form-container, .electives-container {
+.reg-form-container,
+.electives-container,
+.change-electives {
     max-width: 408px;
     margin: 85px auto;
     background-color: #fff;
@@ -316,21 +322,30 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#regForm, #electivesForm {
+#regForm,
+#electivesForm,
+#changeElectivesForm {
     display: flex;
     flex-direction: column;
 }
 
-#regForm span, #electivesForm span {
+#regForm span,
+#electivesForm span {
     color: red;
 }
 
-#regForm label, #electivesForm label {
+#regForm label,
+#electivesForm label,
+#changeElectivesForm label {
     margin-bottom: 8px;
 }
 
 #regForm input,
-#regForm select, #electivesForm input, #electivesForm select {
+#regForm select,
+#electivesForm input,
+#electivesForm select,
+#changeElectivesForm input,
+#changeElectivesForm select {
     padding: 8px;
     margin-bottom: 16px;
     border: 1px solid #ccc;
@@ -346,7 +361,9 @@
     display: none;
 }
 
-#regForm input[type="submit"], #electivesForm input[type="submit"] {
+#regForm input[type="submit"],
+#electivesForm input[type="submit"],
+#changeElectivesForm input[type="submit"] {
     padding: 8px;
     margin-bottom: 16px;
     border-radius: 4px;
@@ -356,13 +373,26 @@
     cursor: pointer;
 }
 
-#regForm input[type="submit"]:hover, #electivesForm input[type="submit"]:hover {
+#regForm input[type="submit"]:hover,
+#electivesForm input[type="submit"]:hover,
+#changeElectivesForm input[type="submit"]:hover {
     background-color: #45a049;
 }
 
-#sameElectiveWarn p {
+#changeElectivesBtn {
+    display: none;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+#sameElectiveWarn p, #noneSelectedWarn p {
     font-weight: bold;
     color: red;
+}
+
+#noneSelectedWarn {
+    text-align: center;
 }
 
 #selected-electives {
@@ -591,11 +621,13 @@
     background-color: #45a049;
 }
 
-#closeMaxCap, #courseWiseBackBtn{
+#closeMaxCap,
+#courseWiseBackBtn {
     margin-top: 10px;
 }
 
-#closeMaxCap button, #courseWiseBackBtn button {
+#closeMaxCap button,
+#courseWiseBackBtn button {
     width: 200px;
     border: none;
     border-radius: 4px;
@@ -604,7 +636,8 @@
     font-weight: bold;
 }
 
-#closeMaxCap button:hover, #courseWiseBackBtn button:hover {
+#closeMaxCap button:hover,
+#courseWiseBackBtn button:hover {
     background-color: red;
     color: white;
 }

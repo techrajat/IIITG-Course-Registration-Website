@@ -103,20 +103,6 @@ def payment(roll):
         return {"error": "Server error"}, 500
 
 
-@pay_bp.route("/selectelectives", methods=["POST"])
-def selectelectives():
-    user = request.environ["user"]
-    electives = request.form["selectedElectives"]
-    try:
-        regStatus.update_one(
-            {"roll_number": user["roll_number"]},
-            {"$set": {"selected_elective": json.loads(electives)}}
-        )
-    except:
-        return {"error": "Student not found"}, 500
-    return {"success": "Electives selected successfully"}, 200
-
-
 @pay_bp.route("/paystatus")
 def paystatus():
     try:
