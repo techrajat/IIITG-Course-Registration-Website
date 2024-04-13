@@ -20,6 +20,11 @@ function VerifiedPayments(props) {
             data = data.result;
             setreceipts(data);
         }
+        else if(data.status === 401) {
+            props.logout();
+            props.setLogoutModal(true);
+            navigate("/");
+        }
     };
 
     const downloadFiles = (receipts, roll) => {

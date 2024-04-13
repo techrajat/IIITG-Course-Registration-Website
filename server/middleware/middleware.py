@@ -39,8 +39,5 @@ class AuthenticationMiddleware:
                 if(user):
                     environ['user'] = user
                     return self.app(environ, start_response)
-            else:
-                res = Response(u'Authorization failed', mimetype= 'text/plain', status=401)
-                return res(environ, start_response)
         
         return self.app(environ, start_response)

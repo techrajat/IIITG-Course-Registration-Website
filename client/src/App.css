@@ -60,6 +60,10 @@
     width: 140px;
 }
 
+#logoutBtn:hover{
+    cursor: pointer;
+}
+
 .navbar-toggler {
     position: absolute;
     right: 13px;
@@ -83,7 +87,7 @@
 }
 
 #modalClose,
-#electiveModalClose {
+#electiveModalClose, #logoutModalClose {
     position: absolute;
     top: 0;
     right: 0;
@@ -92,7 +96,7 @@
 }
 
 #modalClose:hover,
-#electiveModalClose:hover {
+#electiveModalClose:hover, #logoutModalClose:hover {
     background-color: #DC3545;
 }
 

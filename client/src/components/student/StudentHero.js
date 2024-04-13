@@ -37,6 +37,11 @@ function StudentHero(props) {
         "Authorization": localStorage.getItem('token')
       },
     });
+    if(data.status === 401) {
+        props.logout();
+        props.setLogoutModal(true);
+        navigate("/");
+    }
     const parsedData = await data.json();
     if (document.getElementById('student-buttons')) {
       setLoad(false);
@@ -70,12 +75,17 @@ function StudentHero(props) {
 
   const deleteReceipt = async () => {
     setOpenModal(false);
-    await fetch("http://127.0.0.1:5000/deletereceipt", {
+    const data = await fetch("http://127.0.0.1:5000/deletereceipt", {
       method: "GET",
       headers: {
         "Authorization": localStorage.getItem('token')
       },
     });
+    if(data.status === 401) {
+        props.logout();
+        props.setLogoutModal(true);
+        navigate("/");
+    }
   };
 
   const getAllottedElectives = async () => {
@@ -89,6 +99,11 @@ function StudentHero(props) {
       data = await data.json();
       const electives = data.electives;
       setAllottedElectives(electives);
+    }
+    else if(data.status === 401) {
+        props.logout();
+        props.setLogoutModal(true);
+        navigate("/");
     }
     setElectiveLoad(false);
   };
@@ -105,6 +120,11 @@ function StudentHero(props) {
   //   });
   //   if (data.status === 200) {
   //     navigate('/changeelectives');
+  //   }
+  //   else if(data.status === 401) {
+  //     props.logout();
+  //     props.setLogoutModal(true);
+  //     navigate("/");
   //   }
   //   else {
   //     data = await data.json();

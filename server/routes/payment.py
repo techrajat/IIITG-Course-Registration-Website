@@ -36,7 +36,7 @@ def createbill():
     try:
         user = request.environ["user"]
         if not user:
-            return {"error": "Authentication failed"}, 400
+            return {"error": "Authentication failed"}, 401
         amount = request.form["amount"]
         client = razorpay.Client(auth=(Razor_key_id, Razor_key_secret))
         DATA = {"amount": amount, "currency": "INR", "receipt": "receipt#1"}
@@ -44,7 +44,7 @@ def createbill():
         order_id = order_response["id"]
         return {"order_id": order_id}, 200
     except:
-        return {"error": "Server error"}, 500
+        return {"error": "Authentication failed"}, 401
 
 
 def hmac_sha256(data, key):
@@ -100,7 +100,7 @@ def payment(roll):
         else:
             return {"error": "Wrong signature"}, 400
     except:
-        return {"error": "Server error"}, 500
+        return {"error": "Authentication failed"}, 401
 
 
 @pay_bp.route("/paystatus")
@@ -108,7 +108,7 @@ def paystatus():
     try:
         user = request.environ["user"]
         if not user:
-            return {"error": "Authentication failed"}, 400
+            return {"error": "Authentication failed"}, 401
         paid = regStatus.find_one({"roll_number": user["roll_number"]}, {"_id": 0})
         receiptUploaded = uploadedReceipts.find_one({"roll_number": user["roll_number"]}, {"_id": 0})
         receiptVerified = verifiedReceipts.find_one({"roll_number": user["roll_number"]}, {"_id": 0})
@@ -128,4 +128,4 @@ def paystatus():
         else:
             return {"result": "Not paid"}, 400
     except:
-        return {"error": "Server error"}, 500
+        return {"error": "Authentication failed"}, 401

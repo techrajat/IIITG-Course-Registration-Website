@@ -23,7 +23,7 @@ def verifypayment():
     try:
         user = request.environ["user"]
         if not user or not user['finance']:
-            return {"error": "Authentication failed"}, 400
+            return {"error": "Authentication failed"}, 401
         roll = request.form["roll"]
         try:
             regStatus.update_one({"roll_number": roll}, {"$set": {"status": 1}})
@@ -45,7 +45,7 @@ def verifypayment():
             return {"error": "Student not found"}, 500
         return {"result": "Payment verified"}, 200
     except:
-        return {"error": "Server error"}, 500
+        return {"error": "Authentication failed"}, 401
 
 
 @verify_bp.route("/declinepayment", methods=["POST"])
@@ -53,7 +53,7 @@ def declinepayment():
     try:
         user = request.environ["user"]
         if not user or not user['finance']:
-            return {"error": "Authentication failed"}, 400
+            return {"error": "Authentication failed"}, 401
         roll = request.form["roll"]
         reason = request.form["reason"]
         try:
@@ -65,4 +65,4 @@ def declinepayment():
             return {"error": "Student not found"}, 500
         return {"result": "Payment declined"}, 200
     except:
-        return {"error": "Server error"}, 500
+        return {"error": "Authentication failed"}, 401
