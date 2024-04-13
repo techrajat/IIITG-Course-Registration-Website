@@ -2,29 +2,27 @@ import { React, useEffect } from 'react';
 import '../../App.css';
 import { useNavigate } from 'react-router-dom';
 
-function AdminHero(props) {
+function FinanceHero(props) {
   const navigate = useNavigate();
   
   const saveDetails = (event) => {
     event.preventDefault();
     const semester = document.getElementById('semester').value;
-    const branch = document.getElementById('branch').value;
     localStorage.setItem('semester', semester);
-    localStorage.setItem('branch', branch);
-    navigate('/status');
+    navigate('/verifypayments');
   }
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
       props.setLogged(true);
-      props.setAdminSession(true);
+      props.setFinanceSession(true);
     }
     //eslint-disable-next-line
   }, []);
 
   return (
     <div className="home">
-      <div><h1>Course Registration</h1></div>
+      <div><h1>Payment Verification</h1></div>
       <form onSubmit={saveDetails}>
         <select id="semester" className="form-select adminHeroSelect" aria-label="Default select example" required>
           <option value="">Select semester</option>
@@ -37,16 +35,10 @@ function AdminHero(props) {
           <option value="7">7th Semester</option>
           <option value="8">8th Semester</option>
         </select>
-        <select id="branch" className="form-select adminHeroSelect" aria-label="Default select example" required>
-          <option value="">Select branch</option>
-          <option value="All">All</option>
-          <option value="CSE">CSE</option>
-          <option value="ECE">ECE</option>
-        </select>
         <button type="submit" className="btn btn-primary my-2">Proceed</button>
       </form>
     </div>
   );
 }
 
-export default AdminHero;
+export default FinanceHero;

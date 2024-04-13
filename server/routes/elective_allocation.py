@@ -88,18 +88,28 @@ def allocate():
                 },
                 {'_id': 0}
             )
+
+        if not students_collection:
+            return {"error": "No students found"}, 401
+
         students = []
         for student in students_collection:
             students.append(student)
+
         
         courses_collection = courses_db.find_one({"semester": int(semester) + 1, "branch": branch})
         electives_db = courses_collection['electives']
+
+        if not courses_collection or not electives_db:
+            return {"error": "No electives found"}, 401
+        
         electives = []
         max_capacity = {}
         for elective in electives_db:
             for choice in elective:
                 electives.append(choice)
                 max_capacity[f"{choice['code']}:{choice['name']}"] = choice['remaining_capacity']
+
 
         allocation_result = allocate_electives(students, electives, max_capacity)
         

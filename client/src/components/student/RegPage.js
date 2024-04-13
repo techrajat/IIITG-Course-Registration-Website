@@ -39,7 +39,9 @@ function RegPage(props) {
             }
             setCourse(data);
             setLoad(false);
-            document.getElementById('submitRegForm').style.display = 'block';
+            if(document.getElementById('submitRegForm')) {
+                document.getElementById('submitRegForm').style.display = 'block';
+            }
         }
     };
 

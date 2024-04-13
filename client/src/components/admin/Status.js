@@ -1,10 +1,9 @@
 import { React, useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../../App.css';
 import { ClipLoader } from 'react-spinners';
 
 function Status(props) {
-    const navigate = useNavigate();
     const [students, setStudents] = useState([]);
     const [load, setLoad] = useState(false);
     const [allocationStatusKey, setAllocationStatusKey] = useState(0);
@@ -58,6 +57,12 @@ function Status(props) {
                 document.getElementById('allocationBtn').innerHTML = "Allocate Electives";
                 setAllocationStatusKey(allocationStatusKey+1);
             }
+            else if(data.status === 401) {
+                data = await data.json();
+                setLoad(false);
+                document.getElementById('allocationBtn').innerHTML = "Allocate Electives";
+                document.getElementById('allocationWarning').innerHTML = data.error;
+            }
         }
     }
 
@@ -109,7 +114,7 @@ function Status(props) {
             <div className="allotBtn">
                 <div className="text-center"><ClipLoader loading={load} size={20} /> </div>
                 <button id="allocationBtn" type="button" className="btn btn-success my-2" onClick={allocateElectives}>Allocate Electives</button>
-                <button type="button" className="btn btn-success my-2" onClick={() => { navigate('/verify') }}>Verify Payments</button>
+                <div><p style={{color: 'red', fontWeight: 'bold'}} id="allocationWarning"></p></div>
             </div>
             <div id="course-wise-link"><Link to="/coursewise">Get course-wise registered students</Link></div>
         </div>

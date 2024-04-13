@@ -34,7 +34,7 @@ function VerifiedPayments(props) {
     useEffect(() => {
         if (localStorage.getItem('token')) {
             props.setLogged(true);
-            props.setAdminSession(true);
+            props.setFinanceSession(true);
         }
         getVerifiedPayments();
         //eslint-disable-next-line
@@ -68,7 +68,7 @@ function VerifiedPayments(props) {
                     </tbody>
                 </table>
             </div>
-            <div style={{textAlign: 'center'}}><button type="button" className="btn btn-success my-2" onClick={() => { navigate('/verify') }}>Go Back</button></div>
+            <div style={{textAlign: 'center'}}><button type="button" className="btn btn-success my-2" onClick={() => { navigate('/verifypayments') }}>Go Back</button></div>
         </div>
     );
 }

@@ -7,6 +7,7 @@ function Electives(props) {
 
   const [course, setCourse] = useState({});
   const [load, setLoad] = useState(true);
+  const [selectingElectiveLoad, setSelectingElectiveLoad] = useState(false);
   const [selectedElectives, setSelectedElectives] = useState([]);
 
   const checkSelectedElectives = async () => {
@@ -103,6 +104,10 @@ function Electives(props) {
       electives.push(order);
     });
     if (validateForm()) {
+      setSelectingElectiveLoad(true);
+      if(document.getElementById('selectElectivesBtn')) {
+        document.getElementById('selectElectivesBtn').innerHTML = "Selecting Electives";
+      }
       const selectElective = await fetch(`http://127.0.0.1:5000/selectelectives`, {
         method: "POST",
         headers: {
@@ -112,6 +117,10 @@ function Electives(props) {
         body: `selectedElectives=${encodeURIComponent(JSON.stringify(electives))}`
       });
       if (selectElective.status === 200) {
+        setSelectingElectiveLoad(false);
+        if(document.getElementById('selectElectivesBtn')) {
+          document.getElementById('selectElectivesBtn').innerHTML = "Select Electives";
+        }
         navigate('/studenthero');
       }
     }
@@ -140,7 +149,7 @@ function Electives(props) {
         <div id="elective-preference">
           {Object.keys(course).length !== 0 && course.electives !== null && course.electives.map((element, index) => {
             return <div className="elective" key={index}>
-              <label htmlFor="course"><span>*</span> Select preference order for elective/project {index + 1}:</label>
+              <label htmlFor="course"><span style={{color: 'red'}}>*</span> Select preference order for elective/project {index + 1}:</label>
               {element.map((ele, ind) => {
                 return <select id={`select${index}${ind}`} className="selectedElectives" name="course" key={ind} required>
                   <option value="">Preference {ind + 1}</option>
@@ -151,7 +160,7 @@ function Electives(props) {
               })}
             </div>
           })}
-          <div style={{ 'textAlign': 'center' }}><input type="submit" value="Select Electives" /></div>
+          <button type="submit" className="btn btn-success w-100"><ClipLoader loading={selectingElectiveLoad} size={20} /> <span id="selectElectivesBtn">Select Electives</span></button>
         </div>
         <div id="sameElectiveWarn" style={{ display: 'none' }}><p>You cannot choose the same elective multiple times.</p></div>
       </form>
