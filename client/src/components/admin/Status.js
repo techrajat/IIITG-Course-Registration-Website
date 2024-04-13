@@ -1,9 +1,11 @@
 import { React, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import '../../App.css';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 
 function Status(props) {
+    const navigate = useNavigate();
     const [students, setStudents] = useState([]);
     const [load, setLoad] = useState(false);
     const [allocationStatusKey, setAllocationStatusKey] = useState(0);
@@ -22,6 +24,11 @@ function Status(props) {
             data = data.result;
             setStudents(data);
         }
+        else if(data.status === 401) {
+            props.logout();
+            props.setLogoutModal(true);
+            navigate("/");
+        }
     };
 
     const getUnregisteredStudents = async () => {
@@ -37,6 +44,11 @@ function Status(props) {
             data = await data.json();
             data = data.result;
             setStudents(data);
+        }
+        else if(data.status === 401) {
+            props.logout();
+            props.setLogoutModal(true);
+            navigate("/");
         }
     };
 
@@ -57,11 +69,16 @@ function Status(props) {
                 document.getElementById('allocationBtn').innerHTML = "Allocate Electives";
                 setAllocationStatusKey(allocationStatusKey+1);
             }
-            else if(data.status === 401) {
+            else if(data.status === 403) {
                 data = await data.json();
                 setLoad(false);
                 document.getElementById('allocationBtn').innerHTML = "Allocate Electives";
                 document.getElementById('allocationWarning').innerHTML = data.error;
+            }
+            else if(data.status === 401) {
+                props.logout();
+                props.setLogoutModal(true);
+                navigate("/");
             }
         }
     }

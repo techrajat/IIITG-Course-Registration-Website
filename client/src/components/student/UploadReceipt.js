@@ -43,12 +43,17 @@ function UploadReceipt(props) {
                         if (data.status === 200) {
                             navigate('/studenthero');
                         }
-                        else if(data.status === 401) {
+                        else if(data.status === 403) {
                             data = await data.json();
                             document.getElementById('alreadySubmittedWarn').innerHTML = data.error;
                             document.getElementById('recSubmitSpan').innerHTML = 'Submit';
                             setLoad(false);
                             document.getElementById('recSubmitBtn').disabled = false;
+                        }
+                        else if(data.status === 401) {
+                            props.logout();
+                            props.setLogoutModal(true);
+                            navigate("/");
                         }
                     }
                 };

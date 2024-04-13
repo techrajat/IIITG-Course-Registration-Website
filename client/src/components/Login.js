@@ -1,6 +1,18 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
+import Modal from 'react-modal';
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)'
+  }
+};
 
 function Login(props) {
   const navigate = useNavigate();
@@ -44,8 +56,26 @@ function Login(props) {
     }
   };
 
+  let subtitle;
+  function afterOpenModal() {
+    subtitle.style.color = 'rgb(78, 65, 65)';
+    subtitle.style.textDecorationLine = 'underline';
+  }
+
   return (
     <div className="login-page">
+      <Modal
+        isOpen={props.logoutModal}
+        onAfterOpen={afterOpenModal}
+        style={customStyles}
+        ariaHideApp={false}
+        contentLabel="Attention"
+        id={'custom-modal'}
+      >
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Attention</h2>
+        <button onClick={()=>{props.setLogoutModal(false)}} id="logoutModalClose"><i className="fa-solid fa-xmark"></i></button>
+        <p className="modalMessage">You have been logged out. Please login again.</p>
+      </Modal>
       <div className="container">
         <h1>Sign in with Google</h1>
         <button type="button" className="login-with-google-btn" onClick={() => googleSignIn()}>

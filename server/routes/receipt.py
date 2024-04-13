@@ -25,7 +25,7 @@ def getreceipt():
         receipt = paymentsDB.find_one({"roll_number": user["roll_number"]}, {"_id": 0})
         return {"result": receipt}, 200
     except:
-        return {"error": "Server error"}, 500
+        return {"error": "Authentication failed"}, 401
 
 @receipt_bp.route("/uploadreceipt", methods=["POST"])
 def uploadreceipt():
@@ -40,7 +40,7 @@ def uploadreceipt():
             files.append(value)
         alreadyUploaded = uploadedReceipts.find_one({"roll_number": user["roll_number"]}, {"_id": 0})
         if alreadyUploaded is not None:
-            return {"error": "Receipt already uploaded"}, 401
+            return {"error": "Receipt already uploaded"}, 403
         uploadedReceipts.insert_one(
             {
                 "name": user["name"],
@@ -57,7 +57,7 @@ def uploadreceipt():
         )
         return {"success": "Receipt uploaded"}, 200
     except:
-        return {"error": "Server error"}, 500
+        return {"error": "Authentication failed"}, 401
 
 @receipt_bp.route("/deletereceipt")
 def deletereceipt():
@@ -71,7 +71,7 @@ def deletereceipt():
         else:
             return {"error": "Receipt not found"}, 400
     except:
-        return {"error": "Server error"}, 500
+        return {"error": "Authentication failed"}, 401
 
 @receipt_bp.route("/getuploadedreceipts", methods=["POST"])
 def getuploadedreceipts():
@@ -85,7 +85,7 @@ def getuploadedreceipts():
         result = [dict(receipt) for receipt in receipts if receipt["verified"] != 1 and receipt["declined"] != 1]
         return {"result": result}, 200
     except:
-        return {"error": "Server error"}, 500
+        return {"error": "Authentication failed"}, 401
 
 @receipt_bp.route("/getverifiedpayments", methods=["POST"])
 def getverifiedpayments():
@@ -99,4 +99,4 @@ def getverifiedpayments():
         result = [dict(receipt) for receipt in receipts]
         return {"result": result}, 200
     except:
-        return {"error": "Server error"}, 500
+        return {"error": "Authentication failed"}, 401

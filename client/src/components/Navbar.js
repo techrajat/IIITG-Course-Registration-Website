@@ -27,16 +27,10 @@ function Navbar(props) {
     //eslint-disable-next-line
   }, [props.logged]);
 
-  const logout = () => {
-    setHomeLink("/");
-    props.setLogged(false);
-    props.setAdminSession(false);
-    props.setFinanceSession(false);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('semester');
-    localStorage.removeItem('branch');
+  const log_out = () => {
     googleLogout();
+    props.logout();
+    props.setLogoutModal(true);
     navigate("/");
   }
 
@@ -62,7 +56,7 @@ function Navbar(props) {
                     <i className="fa-solid fa-user"></i> {name ? name : ""}
                   </a>
                   <ul className="dropdown-menu">
-                    <li><Link className="dropdown-item" to="/" onClick={logout}>Logout</Link></li>
+                    <li id="logoutBtn" className="dropdown-item" onClick={log_out}>Logout</li>
                   </ul>
                 </li>}
               </ul>

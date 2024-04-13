@@ -31,6 +31,11 @@ function Electives(props) {
         getCourse();
       }
     }
+    else if(data.status === 401) {
+        props.logout();
+        props.setLogoutModal(true);
+        navigate("/");
+    }
   }
 
   const getCourse = async () => {
@@ -66,6 +71,11 @@ function Electives(props) {
       if (document.getElementById('elective-preference')) {
         document.getElementById('elective-preference').style.display = 'block';
       }
+    }
+    else if(data1.status === 401 || data2.status === 401) {
+        props.logout();
+        props.setLogoutModal(true);
+        navigate("/");
     }
   };
 
@@ -122,6 +132,11 @@ function Electives(props) {
           document.getElementById('selectElectivesBtn').innerHTML = "Select Electives";
         }
         navigate('/studenthero');
+      }
+      else if(selectElective.status === 401) {
+          props.logout();
+          props.setLogoutModal(true);
+          navigate("/");
       }
     }
     else {

@@ -16,7 +16,7 @@ def registered():
     try:
         user = request.environ['user']
         if not user or not user['admin']:
-          return {"error": "Authentication failed"}, 400  
+          return {"error": "Authentication failed"}, 401
         semester = request.form['semester']
         branch = request.form['branch']
         if branch == "All":
@@ -27,14 +27,14 @@ def registered():
         result = [dict(student) for student in students]
         return {"result": result}, 200
     except:
-        return {"error": "Server error"}, 500
+        return {"error": "Authentication failed"}, 401
 
 @status_bp.route("/unregistered", methods=['POST'])
 def unregistered():
     try:
         user = request.environ['user']
         if not user or not user['admin']:
-          return {"error": "Authentication failed"}, 400
+          return {"error": "Authentication failed"}, 401
         semester = request.form['semester']
         branch = request.form['branch']
         if branch == "All":
@@ -45,14 +45,14 @@ def unregistered():
         result = [dict(student) for student in students]
         return {"result": result}, 200
     except:
-        return {"error": "Server error"}, 500
+        return {"error": "Authentication failed"}, 401
     
 @status_bp.route("/elective/students", methods=['POST'])
 def coursewise():
     try:
         user = request.environ['user']
         if not user or not user['admin']:
-          return {"error": "Authentication failed"}, 400
+          return {"error": "Authentication failed"}, 401
         semester = request.form['semester']
         elective = request.form['elective']
         students = collection.find({'semester': int(semester)}, {'_id': 0})
@@ -65,4 +65,4 @@ def coursewise():
                       result.append({'name': student['name'], 'roll_number': student['roll_number'], 'branch': student['branch']})
         return {"result": result}, 200
     except:
-        return {"error": "Server error"}, 500
+        return {"error": "Authentication failed"}, 401

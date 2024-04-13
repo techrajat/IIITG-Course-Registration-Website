@@ -21,6 +21,11 @@ function CourseWise(props) {
             data = await data.json();
             setCourse(data.course);
         }
+        else if(data.status === 401) {
+            props.logout();
+            props.setLogoutModal(true);
+            navigate("/");
+        }
     };
 
     const getRegisteredStudents = async () => {
@@ -36,6 +41,11 @@ function CourseWise(props) {
             data = await data.json();
             data = data.result;
             setMandatoryCourseStudents(data);
+        }
+        else if(data.status === 401) {
+            props.logout();
+            props.setLogoutModal(true);
+            navigate("/");
         }
     };
 
@@ -56,6 +66,11 @@ function CourseWise(props) {
             data = await data.json();
             data = data.result;
             setStudents(data);
+        }
+        else if(data.status === 401) {
+            props.logout();
+            props.setLogoutModal(true);
+            navigate("/");
         }
     };
 

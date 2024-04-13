@@ -47,6 +47,11 @@ function ChangeElectives(props) {
                 document.getElementById('elective-preference').style.display = 'block';
             }
         }
+        else if(data1.status === 401 || data2.status === 401) {
+            props.logout();
+            props.setLogoutModal(true);
+            navigate("/");
+        }
     };
 
     const getAlreadyAllotted = async () => {
@@ -57,13 +62,20 @@ function ChangeElectives(props) {
                 "Authorization": localStorage.getItem('token')
             }
         });
-        data = await data.json();
-        data = data.electives;
-        let temp = {};
-        data.forEach((element) => {
-            temp[`${element.code}: ${element.name}`] = 1;
-        });
-        setAllotedElectives(temp);
+        if(data.status === 200) {
+            data = await data.json();
+            data = data.electives;
+            let temp = {};
+            data.forEach((element) => {
+                temp[`${element.code}: ${element.name}`] = 1;
+            });
+            setAllotedElectives(temp);
+        }
+        else if(data.status === 401) {
+            props.logout();
+            props.setLogoutModal(true);
+            navigate("/");
+        }
     }
 
     useEffect(() => {
@@ -117,6 +129,11 @@ function ChangeElectives(props) {
                 setSubmit(false);
                 document.querySelector('#changeElectivesBtn span').innerHTML = "Request Elective Change";
                 navigate('/studenthero');
+            }
+            else if(selectElective.status === 401) {
+                props.logout();
+                props.setLogoutModal(true);
+                navigate("/");
             }
         }
     }

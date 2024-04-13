@@ -43,6 +43,11 @@ function RegPage(props) {
                 document.getElementById('submitRegForm').style.display = 'block';
             }
         }
+        else if(data1.status === 401 || data2.status === 401) {
+            props.logout();
+            props.setLogoutModal(true);
+            navigate("/");
+        }
     };
 
     useEffect(() => {

@@ -55,6 +55,11 @@ function Payment(props) {
       document.getElementById("payBtn").disabled = false;
       document.getElementById("btnText").innerHTML = "Proceed to Payment";
     }
+    else if(data.status === 401) {
+        props.logout();
+        props.setLogoutModal(true);
+        navigate("/");
+    }
   };
 
   useEffect(()=>{

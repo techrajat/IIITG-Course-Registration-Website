@@ -1,7 +1,9 @@
 import { React, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import html2pdf from  "html2pdf.js";
 
 function Receipt(props) {
+  const navigate = useNavigate();
   const [recDetails, setRecDetails] = useState({});
 
   const getReceipt=async()=>{
@@ -14,6 +16,11 @@ function Receipt(props) {
     if(data.status === 200){
       data = await data.json();
       setRecDetails(data.result);
+    }
+    else if(data.status === 401) {
+        props.logout();
+        props.setLogoutModal(true);
+        navigate("/");
     }
   };
 

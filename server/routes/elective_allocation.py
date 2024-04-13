@@ -66,7 +66,7 @@ def allocate():
     try:
         user = request.environ['user']
         if not user or not user['admin']:
-          return {"error": "Authentication failed"}, 400
+          return {"error": "Authentication failed"}, 401
         semester = request.form['semester']
         branch = request.form['branch']
 
@@ -90,7 +90,7 @@ def allocate():
             )
 
         if not students_collection:
-            return {"error": "No students found"}, 401
+            return {"error": "No students found"}, 403
 
         students = []
         for student in students_collection:
@@ -101,7 +101,7 @@ def allocate():
         electives_db = courses_collection['electives']
 
         if not courses_collection or not electives_db:
-            return {"error": "No electives found"}, 401
+            return {"error": "No electives found"}, 403
         
         electives = []
         max_capacity = {}
@@ -119,4 +119,4 @@ def allocate():
 
         return {"sucess": "Electives allocated successfully"}, 200
     except:
-        return {"error": "Server error"}, 500
+        return {"error": "Authentication failed"}, 401

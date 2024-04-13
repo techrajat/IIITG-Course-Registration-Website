@@ -20,6 +20,11 @@ function VerifyPayments(props) {
             data = data.result;
             setreceipts(data);
         }
+        else if(data.status === 401) {
+            props.logout();
+            props.setLogoutModal(true);
+            navigate("/");
+        }
     };
 
     const confirmVerification = async (roll) => {
@@ -35,6 +40,11 @@ function VerifyPayments(props) {
             });
             if (data.status === 200 && row) {
                 row.remove();
+            }
+            else if(data.status === 401) {
+                props.logout();
+                props.setLogoutModal(true);
+                navigate("/");
             }
         }
         else {
@@ -63,6 +73,11 @@ function VerifyPayments(props) {
             });
             if (data.status === 200 && row) {
                 row.remove();
+            }
+            else if(data.status === 401) {
+                props.logout();
+                props.setLogoutModal(true);
+                navigate("/");
             }
         }
     };
