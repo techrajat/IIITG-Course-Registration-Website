@@ -329,8 +329,7 @@
     flex-direction: column;
 }
 
-#regForm span,
-#electivesForm span {
+#regForm span {
     color: red;
 }
 

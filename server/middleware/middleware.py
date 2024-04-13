@@ -9,6 +9,7 @@ myclient = pymongo.MongoClient(mongodb_conn_string)
 mydb = myclient['IIITG']
 students = mydb['Students']
 adminCred = mydb['Admin']
+financeCred = mydb['Finance-Section']
 
 class AuthenticationMiddleware:
     def __init__(self, app):
@@ -30,7 +31,11 @@ class AuthenticationMiddleware:
                 if user:
                     user['admin'] = 1
                 else:
-                    user = students.find_one({'email': user_info['email']}, {'_id': 0})
+                    user = financeCred.find_one({'email': user_info['email']}, {'_id': 0})
+                    if user:
+                        user['finance'] = 1
+                    else:
+                        user = students.find_one({'email': user_info['email']}, {'_id': 0})
                 if(user):
                     environ['user'] = user
                     return self.app(environ, start_response)

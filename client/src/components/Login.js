@@ -26,8 +26,12 @@ function Login(props) {
         localStorage.setItem('user', JSON.stringify(user));
         props.setLogged(true);
         if ('admin' in user) {
-          navigate('/adminhero');
           props.setAdminSession(true);
+          navigate('/adminhero');
+        }
+        else if('finance' in  user) {
+          props.setFinanceSession(true);
+          navigate('/financehero');
         }
         else {
           navigate('/studenthero');

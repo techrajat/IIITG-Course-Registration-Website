@@ -50,32 +50,38 @@ def viewallottedelectives():
 @courses_bp.route("/selectelectives", methods=["POST"])
 def selectelectives():
     user = request.environ["user"]
+    if not user:
+        return {"error": "Authentication failed"}, 400
     electives = request.form["selectedElectives"]
     try:
         regStatus.update_one(
             {"roll_number": user["roll_number"]},
             {"$set": {"selected_elective": json.loads(electives)}}
         )
+        return {"success": "Electives selected successfully"}, 200
     except:
         return {"error": "Student not found"}, 500
-    return {"success": "Electives selected successfully"}, 200
     
 @courses_bp.route("/selectalternateelectives", methods=["POST"])
 def selectalternateelectives():
     user = request.environ["user"]
+    if not user:
+        return {"error": "Authentication failed"}, 400
     electives = request.form["alternateElectives"]
     try:
         regStatus.update_one(
             {"roll_number": user["roll_number"]},
             {"$set": {"change_elective": json.loads(electives)}}
         )
+        return {"success": "Electives selected successfully"}, 200
     except:
         return {"error": "Student not found"}, 500
-    return {"success": "Electives selected successfully"}, 200
     
 @courses_bp.route("/checkalternateelectives")
 def checkalternateelectives():
     user = request.environ["user"]
+    if not user:
+        return {"error": "Authentication failed"}, 400
     student = regStatus.find_one({"roll_number": user["roll_number"]})
     if(student and student['change_elective']):
         return {"result": "Elective change request already made"}, 400

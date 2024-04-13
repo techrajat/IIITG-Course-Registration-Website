@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../App.css';
 
-function VerifyDeclinePayment(props) {
+function VerifyPayments(props) {
     const navigate = useNavigate();
     const [receipts, setreceipts] = useState([]);
 
@@ -79,7 +79,7 @@ function VerifyDeclinePayment(props) {
     useEffect(() => {
         if (localStorage.getItem('token')) {
             props.setLogged(true);
-            props.setAdminSession(true);
+            props.setFinanceSession(true);
         }
         getReceipts();
         //eslint-disable-next-line
@@ -122,9 +122,9 @@ function VerifyDeclinePayment(props) {
                 </table>
             </div>
             <div className="adminNavBtn"><button type="button" className="btn btn-success my-2" onClick={() => { navigate('/verified') }}>View Verified Payments</button></div>
-            <div className="adminNavBtn"><button type="button" className="btn btn-success my-2" onClick={() => { navigate('/status') }}>Go Back</button></div>
+            <div className="adminNavBtn"><button type="button" className="btn btn-success my-2" onClick={() => { navigate('/financehero') }}>Go Back</button></div>
         </div>
     );
 }
 
-export default VerifyDeclinePayment;
+export default VerifyPayments;

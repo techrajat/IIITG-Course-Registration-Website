@@ -14,11 +14,14 @@ function Navbar(props) {
       let user = localStorage.getItem('user');
       user = JSON.parse(user)
       setName(user.name);
-      if (!props.adminSession) {
-        setHomeLink("/studenthero");
+      if (props.adminSession) {
+        setHomeLink("/adminhero");
+      }
+      else if(props.financeSession) {
+        setHomeLink("/financehero");
       }
       else {
-        setHomeLink("/adminhero");
+        setHomeLink("/studenthero");
       }
     }
     //eslint-disable-next-line
@@ -27,9 +30,12 @@ function Navbar(props) {
   const logout = () => {
     setHomeLink("/");
     props.setLogged(false);
-    props.setAdminSession(0);
+    props.setAdminSession(false);
+    props.setFinanceSession(false);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('semester');
+    localStorage.removeItem('branch');
     googleLogout();
     navigate("/");
   }

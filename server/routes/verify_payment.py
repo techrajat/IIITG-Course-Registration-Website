@@ -22,7 +22,7 @@ verifiedReceipts = db["VerifiedReceipts"]
 def verifypayment():
     try:
         user = request.environ["user"]
-        if not user or not user['admin']:
+        if not user or not user['finance']:
             return {"error": "Authentication failed"}, 400
         roll = request.form["roll"]
         try:
@@ -52,7 +52,7 @@ def verifypayment():
 def declinepayment():
     try:
         user = request.environ["user"]
-        if not user or not user['admin']:
+        if not user or not user['finance']:
             return {"error": "Authentication failed"}, 400
         roll = request.form["roll"]
         reason = request.form["reason"]
