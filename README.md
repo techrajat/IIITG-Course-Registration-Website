@@ -66,7 +66,7 @@ This project automates the course registration process for students at IIITG, el
    # For MongoDB local server 
    $ mongorestore --db IIITG --drop --dir Sample_Database
    # Or, for MongoDB Atlas 
-   $ mongorestore --db sample --uri "your_connection_uri" --drop --dir Sample_Database
+   $ mongorestore --db IIITG --uri "your_connection_uri" --drop --dir Sample_Database
    ```
    - Replace some of the fake email IDs with original ones in the following collections:
      - "Admin"
