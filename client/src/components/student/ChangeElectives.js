@@ -117,7 +117,7 @@ function ChangeElectives(props) {
         else {
             setSubmit(true);
             document.querySelector('#changeElectivesBtn span').innerHTML = "Submitting request";
-            const selectElective = await fetch(`http://127.0.0.1:5000/selectalternateelectives`, {
+            const selectElective = await fetch(`http://127.0.0.1:5000/requestchange`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
