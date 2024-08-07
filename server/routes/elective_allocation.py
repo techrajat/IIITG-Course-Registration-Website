@@ -13,7 +13,7 @@ db = myclient["IIITG"]
 regStatus_db = db["RegStatus"]
 courses_db = db["Courses"]
 
-def allocate_electives(students, electives, max_capacity):
+def allocate_electives(students, electives, max_capacity, semester, branch):
     allocation_result = {f"{elective['code']}:{elective['name']}": [] for elective in electives}
     sorted_students = sorted(students, key=lambda x: x["cpi"], reverse=True)
 
@@ -27,6 +27,18 @@ def allocate_electives(students, electives, max_capacity):
                    ):
                     allocation_result[choice_desc].append(student["roll_number"])
                     break
+
+    courses_collection = courses_db.find_one({"semester": int(semester) + 1, "branch": branch})
+    electives_collection = courses_collection['electives']
+    for elective_db in electives_collection:
+        for choice in elective_db:
+            choice['students'] = allocation_result[f"{choice['code']}:{choice['name']}"]
+
+    courses_db.update_one(
+        {"semester": int(semester) + 1, "branch": branch}, 
+        {"$set": {"electives": electives_collection}}
+    )
+
     return allocation_result
 
 def update_students(allocation_result, students):
@@ -111,7 +123,7 @@ def allocate():
                 max_capacity[f"{choice['code']}:{choice['name']}"] = choice['remaining_capacity']
 
 
-        allocation_result = allocate_electives(students, electives, max_capacity)
+        allocation_result = allocate_electives(students, electives, max_capacity, semester, branch)
         
         update_students(allocation_result, students)
 
