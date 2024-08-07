@@ -28,5 +28,8 @@ app.register_blueprint(verify_payment.verify_bp)
 import routes.elective_allocation as elective_allocation
 app.register_blueprint(elective_allocation.allocation_bp)
 
+import routes.elective_change as elective_change
+app.register_blueprint(elective_change.changes_bp)
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

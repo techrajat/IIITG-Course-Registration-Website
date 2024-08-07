@@ -111,28 +111,28 @@ function StudentHero(props) {
   // Uncomment this section and corresponding HTML to continue for change of electives.
   // The endpoint is defined in the route "courses.py".
 
-  // const changeElectives = async () => {
-  //   let data = await fetch("http://127.0.0.1:5000/checkalternateelectives", {
-  //     method: "GET",
-  //     headers: {
-  //       "Authorization": localStorage.getItem('token')
-  //     }
-  //   });
-  //   if (data.status === 200) {
-  //     navigate('/changeelectives');
-  //   }
-  //   else if(data.status === 401) {
-  //     props.logout();
-  //     props.setLogoutModal(true);
-  //     navigate("/");
-  //   }
-  //   else {
-  //     data = await data.json();
-  //     data = data.result;
-  //     if(document.getElementById('altElectSelected'))
-  //       document.getElementById('altElectSelected').innerHTML = data;
-  //   }
-  // }
+  const changeElectives = async () => {
+    let data = await fetch("http://127.0.0.1:5000/electivechangereq", {
+      method: "GET",
+      headers: {
+        "Authorization": localStorage.getItem('token')
+      }
+    });
+    if (data.status === 200) {
+      navigate('/changeelectives');
+    }
+    else if(data.status === 401) {
+      props.logout();
+      props.setLogoutModal(true);
+      navigate("/");
+    }
+    else {
+      data = await data.json();
+      data = data.result;
+      if(document.getElementById('altElectSelected'))
+        document.getElementById('altElectSelected').innerHTML = data;
+    }
+  }
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -182,8 +182,8 @@ function StudentHero(props) {
           })}
 
           {/* Uncomment this section to continue for change of electives */}
-          {/* <button type="button" className="btn btn-primary" onClick={changeElectives}>Change electives</button>
-          <div><p id="altElectSelected"></p></div> */}
+          <button type="button" className="btn btn-primary" onClick={changeElectives}>Change electives</button>
+          <div><p id="altElectSelected"></p></div>
         </div>}
       </Modal>
       <div className="studentRegOptions">

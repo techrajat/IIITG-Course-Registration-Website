@@ -11,6 +11,7 @@ myclient = pymongo.MongoClient(mongodb_conn_string)
 db = myclient['IIITG']
 courses_db = db['Courses']
 regStatus = db['RegStatus']
+electiveChangeDB = db['Elective-Change']
 
 @courses_bp.route("/getcourse", methods=['POST'])
 def registered():
@@ -59,33 +60,5 @@ def selectelectives():
             {"$set": {"selected_elective": json.loads(electives)}}
         )
         return {"success": "Electives selected successfully"}, 200
-    except:
-        return {"error": "Authentication failed"}, 401
-    
-@courses_bp.route("/selectalternateelectives", methods=["POST"])
-def selectalternateelectives():
-    try:
-        user = request.environ["user"]
-        if not user:
-            return {"error": "Authentication failed"}, 401
-        electives = request.form["alternateElectives"]
-        regStatus.update_one(
-            {"roll_number": user["roll_number"]},
-            {"$set": {"change_elective": json.loads(electives)}}
-        )
-        return {"success": "Electives selected successfully"}, 200
-    except:
-        return {"error": "Authentication failed"}, 401
-    
-@courses_bp.route("/checkalternateelectives")
-def checkalternateelectives():
-    try:
-        user = request.environ["user"]
-        if not user:
-            return {"error": "Authentication failed"}, 401
-        student = regStatus.find_one({"roll_number": user["roll_number"]})
-        if(student and student['change_elective']):
-            return {"result": "Elective change request already made"}, 400
-        return {"result": "Elective change request not made yet"}, 200
     except:
         return {"error": "Authentication failed"}, 401
