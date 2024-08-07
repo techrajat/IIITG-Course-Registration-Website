@@ -26,3 +26,6 @@ env/
 __pycache__/
 .env
 .vscode
+
+# Database :-
+IIITG_Database/
