@@ -178,10 +178,25 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 50px 50px 100px 50px;
+    margin: 50px 50px 0 50px;
 }
 
 .allotBtn button {
+    width: 170px;
+}
+
+#electiveChangePage {
+    margin-top: 70px;
+}
+
+.changeBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+#changeElectiveBtn {
     width: 170px;
 }
 
