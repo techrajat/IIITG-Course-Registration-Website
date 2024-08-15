@@ -93,7 +93,7 @@ function ChangeElectives(props) {
         }
         else {
             if (document.getElementById(`label${labelIndex}`)) {
-                document.getElementById(`label${labelIndex}`).innerHTML = `<b>Select alternative for <span class="original">${elective.code}:${elective.name}</span></b>`;
+                document.getElementById(`label${labelIndex}`).innerHTML = `<b>Select alternative for <span class="original">${elective.code}::${elective.name}</span></b>`;
             }
         }
     }
@@ -106,7 +106,7 @@ function ChangeElectives(props) {
         for (let i = 0; i < select.length; i++) {
             if (select[i].value !== "") {
                 let item = select[i].value.split('::');
-                let originalElective = original[i].innerHTML.split(':');
+                let originalElective = original[i].innerHTML.split('::');
                 alternateElectives.push({ "from": { "code": originalElective[0], "name": originalElective[1] }, "to": { "code": item[0], "name": item[1] } });
                 validForm = 1;
             }
