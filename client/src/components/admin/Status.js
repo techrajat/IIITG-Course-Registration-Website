@@ -97,11 +97,11 @@ function Status(props) {
             <div className="choose">
                 <div className="form-check form-check-inline">
                     <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" defaultChecked={true} onClick={getRegisteredStudents} />
-                    <label className="form-check-label" htmlFor="inlineRadio1"><b>Regsitered</b></label>
+                    <label className="form-check-label" htmlFor="inlineRadio1"><b>Registered</b></label>
                 </div>
                 <div className="form-check form-check-inline">
                     <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" onClick={getUnregisteredStudents} />
-                    <label className="form-check-label" htmlFor="inlineRadio2"><b>Unregsitered</b></label>
+                    <label className="form-check-label" htmlFor="inlineRadio2"><b>Unregistered</b></label>
                 </div>
             </div>
             <div className="table-container">
@@ -132,6 +132,9 @@ function Status(props) {
                 <div className="text-center"><ClipLoader loading={load} size={20} /> </div>
                 <button id="allocationBtn" type="button" className="btn btn-success my-2" onClick={allocateElectives}>Allocate Electives</button>
                 <div><p style={{color: 'red', fontWeight: 'bold'}} id="allocationWarning"></p></div>
+            </div>
+            <div className="changeBtn">
+                <button id="changeElectiveBtn" type="button" className="btn btn-success my-2" onClick={()=>{navigate('/changeelectivesadmin')}}>Change Electives</button>
             </div>
             <div id="course-wise-link"><Link to="/coursewise">Get course-wise registered students</Link></div>
         </div>
