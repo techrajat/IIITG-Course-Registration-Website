@@ -12,6 +12,7 @@ db = myclient['IIITG']
 courses_db = db['Courses']
 regStatus = db['RegStatus']
 electiveChangeDB = db['Elective-Change']
+additionalCoursesDB = db['AdditionalCourses']
 
 @courses_bp.route("/getcourse", methods=['POST'])
 def registered():
@@ -22,6 +23,18 @@ def registered():
         semester = request.form['semester']
         branch = request.form['branch']
         course = courses_db.find_one({"semester": int(semester), "branch": branch}, {"_id": 0})
+        return {"course": course}, 200
+    except:
+        return {"error": "Authentication failed"}, 401
+
+@courses_bp.route("/additionalcourses", methods=['POST'])
+def additionalcourses():
+    try:
+        user = request.environ['user']
+        if not user:
+          return {"error": "Authentication failed"}, 401
+        semester = request.form['semester']
+        course = additionalCoursesDB.find_one({"roll_number": user['roll_number'], "semester": int(semester)}, {"_id": 0})
         return {"course": course}, 200
     except:
         return {"error": "Authentication failed"}, 401

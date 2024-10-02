@@ -341,6 +341,34 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.regLabel {
+    font-weight: bold;
+}
+
+.fa-circle-question {
+    font-size: smaller;
+    position: relative;
+    top: -4px;
+}
+
+.fa-circle-question:hover {
+    cursor: pointer;
+}
+
+#tooltip {
+    font-weight: normal;
+    font-size: 12px;
+    color: black;
+    display: none;
+    position: relative;
+    width: fit-content;
+    right: -7px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+}
+
 #regForm,
 #electivesForm,
 #changeElectivesForm {
