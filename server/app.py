@@ -31,5 +31,8 @@ app.register_blueprint(elective_allocation.allocation_bp)
 import routes.elective_change as elective_change
 app.register_blueprint(elective_change.changes_bp)
 
+import routes.feedback as feedback
+app.register_blueprint(feedback.feedback_bp)
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
