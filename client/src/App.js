@@ -17,6 +17,7 @@ import Payment from './components/student/Payment';
 import Receipt from './components/student/Receipt';
 import UploadReceipt from './components/student/UploadReceipt';
 import ChangeElectives from './components/student/ChangeElectives';
+import Feedback from './components/student/Feedback';
 
 function App() {
   const [logged, setLogged] = useState(false);
@@ -54,6 +55,7 @@ function App() {
           <Route exact path='/receipt' element={<Receipt setLogged={setLogged} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
           <Route exact path='/uploadreceipt' element={<UploadReceipt setLogged={setLogged} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
           <Route exact path='/changeelectives' element={<ChangeElectives setLogged={setLogged} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
+          <Route exact path='/feedback' element={<Feedback setLogged={setLogged} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
         </Routes>
       </Router>
     </div>
