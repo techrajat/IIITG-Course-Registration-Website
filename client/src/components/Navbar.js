@@ -57,6 +57,9 @@ function Navbar(props) {
                 {props.logged === true && props.adminSession === true && props.financeSession === false && <li className="nav-item">
                   <Link className="nav-link" to="/feedbackreview"><i className="fa-solid fa-comment"></i> Feedback</Link>
                 </li>}
+                {props.logged === true && props.adminSession === true && props.financeSession === false && <li className="nav-item">
+                  <Link className="nav-link" to="/files"><i className="fa-solid fa-upload" style={{'height': '18px'}}></i> Files</Link>
+                </li>}
                 {props.logged === true && <li className="nav-item dropdown" id="logged">
                   <a className="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i className="fa-solid fa-user"></i> {name ? name : ""}

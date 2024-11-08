@@ -34,5 +34,8 @@ app.register_blueprint(elective_change.changes_bp)
 import routes.feedback as feedback
 app.register_blueprint(feedback.feedback_bp)
 
+import routes.files as files
+app.register_blueprint(files.files_bp)
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
