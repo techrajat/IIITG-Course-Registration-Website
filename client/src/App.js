@@ -7,6 +7,8 @@ import AdminHero from './components/admin/AdminHero';
 import Status from './components/admin/Status';
 import CourseWise from './components/admin/CourseWise';
 import ElectiveChanges from './components/admin/ElectiveChanges';
+import FeedbackReview from './components/admin/FeedbackReview';
+import ViewFeedback from './components/admin/ViewFeedback';
 import FinanceHero from './components/finance/FinanceHero';
 import VerifyPayments from './components/finance/VerifyPayments';
 import VerifiedPayments from './components/finance/VerifiedPayments';
@@ -45,6 +47,8 @@ function App() {
           <Route exact path='/status' element={<Status setLogged={setLogged} setAdminSession={setAdminSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
           <Route exact path='/coursewise' element={<CourseWise setLogged={setLogged} setAdminSession={setAdminSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
           <Route exact path='/changeelectivesadmin' element={<ElectiveChanges setLogged={setLogged} setAdminSession={setAdminSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
+          <Route exact path='/feedbackreview' element={<FeedbackReview setLogged={setLogged} setAdminSession={setAdminSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
+          <Route exact path='/viewfeedback' element={<ViewFeedback setLogged={setLogged} setAdminSession={setAdminSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
           <Route exact path='/financehero' element={<FinanceHero setLogged={setLogged} setFinanceSession={setFinanceSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
           <Route exact path='/verifypayments' element={<VerifyPayments setLogged={setLogged} setFinanceSession={setFinanceSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
           <Route exact path='/verified' element={<VerifiedPayments setLogged={setLogged} setFinanceSession={setFinanceSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
