@@ -9,6 +9,9 @@ import CourseWise from './components/admin/CourseWise';
 import ElectiveChanges from './components/admin/ElectiveChanges';
 import FeedbackReview from './components/admin/FeedbackReview';
 import ViewFeedback from './components/admin/ViewFeedback';
+import Files from './components/admin/Files';
+import Upload from './components/admin/Upload';
+import Download from './components/admin/Download';
 import FinanceHero from './components/finance/FinanceHero';
 import VerifyPayments from './components/finance/VerifyPayments';
 import VerifiedPayments from './components/finance/VerifiedPayments';
@@ -49,6 +52,9 @@ function App() {
           <Route exact path='/changeelectivesadmin' element={<ElectiveChanges setLogged={setLogged} setAdminSession={setAdminSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
           <Route exact path='/feedbackreview' element={<FeedbackReview setLogged={setLogged} setAdminSession={setAdminSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
           <Route exact path='/viewfeedback' element={<ViewFeedback setLogged={setLogged} setAdminSession={setAdminSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
+          <Route exact path='/files' element={<Files setLogged={setLogged} setAdminSession={setAdminSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
+          <Route exact path='/upload' element={<Upload setLogged={setLogged} setAdminSession={setAdminSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
+          <Route exact path='/download' element={<Download setLogged={setLogged} setAdminSession={setAdminSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
           <Route exact path='/financehero' element={<FinanceHero setLogged={setLogged} setFinanceSession={setFinanceSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
           <Route exact path='/verifypayments' element={<VerifyPayments setLogged={setLogged} setFinanceSession={setFinanceSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>
           <Route exact path='/verified' element={<VerifiedPayments setLogged={setLogged} setFinanceSession={setFinanceSession} logout={logout} setLogoutModal={setLogoutModal} />}></Route>

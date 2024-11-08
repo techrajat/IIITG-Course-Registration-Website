@@ -876,3 +876,30 @@
     margin-top: 75px;
     padding: 0 30px 0 30px;
 }
+
+#files {
+    margin-top: 75px;
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#files button {
+    margin: 12px;
+    width: 150px;
+}
+
+.fa-upload, .fa-download {
+    height: 17px;
+    margin-right: 10px;
+}
+
+#upload {
+    margin-top: 100px;
+}
+
+#download {
+    margin-top: 100px;
+}
